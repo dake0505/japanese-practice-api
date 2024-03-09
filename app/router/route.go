@@ -2,6 +2,7 @@ package router
 
 import (
 	"gin-gonic-api/config"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,9 @@ func Init(init *config.Initialization) *gin.Engine {
 		user.GET("/:userID", init.UserCtrl.GetUserById)
 		user.PUT("/:userID", init.UserCtrl.UpdateUserData)
 		user.DELETE("/:userID", init.UserCtrl.DeleteUser)
+
+		n2Vocabulary := api.Group("/n2Vocabulary", init.N2VocabularyCtrl.GetList)
+		n2Vocabulary.GET("")
 	}
 
 	return router
