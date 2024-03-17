@@ -5,11 +5,12 @@ import (
 	"gin-gonic-api/app/domain/dao"
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/repository"
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
-	"strconv"
 )
 
 type UserService interface {
@@ -102,6 +103,7 @@ func (u UserServiceImpl) GetAllUser(c *gin.Context) {
 	if err != nil {
 		log.Error("Happened Error when find all user data. Error: ", err)
 		pkg.PanicException(constant.UnknownError)
+		print(123)
 	}
 
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))

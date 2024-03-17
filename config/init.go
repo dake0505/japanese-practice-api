@@ -12,7 +12,6 @@ type Initialization struct {
 	UserCtrl            controller.UserController
 	RoleRepo            repository.RoleRepository
 	n2VocabularyRepo    repository.N2VocabularyRepository
-	n2VocabularySvc     service.N2VocabularyService
 	N2VocabularyCtrl    controller.N2VocabularyController
 	n2VocabularyService service.N2VocabularyService
 }

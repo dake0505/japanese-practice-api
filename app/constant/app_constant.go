@@ -20,3 +20,7 @@ func (r ResponseStatus) GetResponseStatus() string {
 func (r ResponseStatus) GetResponseMessage() string {
 	return [...]string{"Success", "Data Not Found", "Unknown Error", "Invalid Request", "Unauthorized"}[r-1]
 }
+
+func (r ResponseStatus) GetResponseCode() int {
+	return [...]int{200, 404, 500, 400, 401}[r-1]
+}
