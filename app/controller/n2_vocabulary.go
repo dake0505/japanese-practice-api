@@ -5,6 +5,7 @@ import (
 	"gin-gonic-api/app/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 )
 
 type N2VocabularyController interface {
@@ -23,7 +24,8 @@ func (n N2VocabularyControllerImpl) GetList(c *gin.Context) {
 
 func (n N2VocabularyControllerImpl) GetQuestionById(c *gin.Context) {
 	p := pkg.PaginatorHandler(c)
-	n.svc.GetQuestionById(c, p)
+	questionId := cast.ToInt(c.Param("questionId"))
+	n.svc.GetQuestionById(c, p, questionId)
 }
 
 func N2VocabularyControllerInit(n2VocabularyService service.N2VocabularyService) *N2VocabularyControllerImpl {

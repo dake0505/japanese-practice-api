@@ -66,3 +66,11 @@
 2024-03-17 16:50:07.068 JST [840] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
 2024-03-17 16:50:33.648 JST [951] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
 2024-03-17 16:50:33.648 JST [951] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:54:20.792 JST [1454] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:54:20.792 JST [1454] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:55:01.481 JST [1573] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:55:01.481 JST [1573] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:55:17.798 JST [1671] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:55:17.798 JST [1671] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:56:41.586 JST [1840] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:56:41.586 JST [1840] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint

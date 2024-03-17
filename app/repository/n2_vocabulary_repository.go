@@ -11,7 +11,7 @@ import (
 
 type N2VocabularyRepository interface {
 	GetList(p *pkg.Paginator) ([]dao.N2VocabularySubject, error)
-	GetQuestionById(p *pkg.Paginator) ([]dao.N2VocabularySubjectOption, error)
+	GetQuestionById(p *pkg.Paginator, questionId int) ([]dao.N2VocabularySubjectOption, error)
 }
 
 type N2VocabularyRepositoryImpl struct {
@@ -30,10 +30,10 @@ func (i N2VocabularyRepositoryImpl) GetList(p *pkg.Paginator) ([]dao.N2Vocabular
 	return iterms, nil
 }
 
-func (i N2VocabularyRepositoryImpl) GetQuestionById(p *pkg.Paginator) ([]dao.N2VocabularySubjectOption, error) {
+func (i N2VocabularyRepositoryImpl) GetQuestionById(p *pkg.Paginator, questionId int) ([]dao.N2VocabularySubjectOption, error) {
 	var iterms []dao.N2VocabularySubjectOption
 
-	var err = i.db.Where("questionId = ?", "1652687").Find(&iterms).Error
+	var err = i.db.Where("questionId = ?", questionId).Find(&iterms).Error
 
 	if err != nil {
 		log.Error("Got an error finding n2 vocabulary", err)
