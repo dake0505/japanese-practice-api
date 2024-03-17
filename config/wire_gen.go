@@ -26,9 +26,12 @@ func Init() *Initialization {
 	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB, paginator)
 	n2VocabularyServiceImpl := service.N2VocabularyServiceInit(n2VocabularyRepositoryImpl)
 	n2VocabularyControllerImpl := controller.N2VocabularyControllerInit(n2VocabularyServiceImpl)
+	operationRepositoryImpl := repository.OperationRepositoryInit(gormDB)
+	operationServiceImpl := service.OperationServiceInit(operationRepositoryImpl)
+	operationControllerImpl := controller.OperationControllerInit(operationServiceImpl)
 	
 	roleRepositoryImpl := repository.RoleRepositoryInit(gormDB)
-	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl)
+	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl)
 	return initialization
 }
 

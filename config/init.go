@@ -14,6 +14,9 @@ type Initialization struct {
 	n2VocabularyRepo    repository.N2VocabularyRepository
 	N2VocabularyCtrl    controller.N2VocabularyController
 	n2VocabularyService service.N2VocabularyService
+	operationRepo       repository.OperationRepository
+	OperationCtrl       controller.OperationController
+	operationSerivce    service.OperationService
 }
 
 func NewInitialization(
@@ -24,6 +27,10 @@ func NewInitialization(
 	n2VocabularyRepo repository.N2VocabularyRepository,
 	n2VocabularyService service.N2VocabularyService,
 	n2VocabularyCtrl controller.N2VocabularyController,
+
+	operationRepo repository.OperationRepository,
+	operationCtrl controller.OperationController,
+	operationSerivce service.OperationService,
 ) *Initialization {
 	return &Initialization{
 		userRepo:            userRepo,
@@ -33,5 +40,8 @@ func NewInitialization(
 		n2VocabularyRepo:    n2VocabularyRepo,
 		n2VocabularyService: n2VocabularyService,
 		N2VocabularyCtrl:    n2VocabularyCtrl,
+		operationRepo:       operationRepo,
+		OperationCtrl:       operationCtrl,
+		operationSerivce:    operationSerivce,
 	}
 }
