@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/service"
 
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,8 @@ type N2VocabularyControllerImpl struct {
 }
 
 func (n N2VocabularyControllerImpl) GetList(c *gin.Context) {
-	n.svc.GetList(c)
+	p := pkg.PaginatorHandler(c)
+	n.svc.GetList(c, p)
 }
 
 func N2VocabularyControllerInit(n2VocabularyService service.N2VocabularyService) *N2VocabularyControllerImpl {

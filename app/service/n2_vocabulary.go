@@ -11,19 +11,19 @@ import (
 )
 
 type N2VocabularyService interface {
-	GetList(c *gin.Context)
+	GetList(c *gin.Context, p *pkg.Paginator)
 }
 
 type N2VocabularyServiceImpl struct {
 	n2VocabularyRepository repository.N2VocabularyRepository
 }
 
-func (n N2VocabularyServiceImpl) GetList(c *gin.Context) {
+func (n N2VocabularyServiceImpl) GetList(c *gin.Context, p *pkg.Paginator) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program get all n2 vocabulary list")
 
-	data, err := n.n2VocabularyRepository.GetList()
+	data, err := n.n2VocabularyRepository.GetList(p)
 
 	if err != nil {
 		log.Error("Happened Error when find all n2 vocabulary list. Error: ", err)
