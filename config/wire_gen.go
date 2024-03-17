@@ -8,8 +8,10 @@ package config
 
 import (
 	"gin-gonic-api/app/controller"
+	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/repository"
 	"gin-gonic-api/app/service"
+
 	"github.com/google/wire"
 )
 
@@ -17,10 +19,11 @@ import (
 
 func Init() *Initialization {
 	gormDB := ConnectToDB()
+  paginator := &pkg.Paginator{}
 	userRepositoryImpl := repository.UserRepositoryInit(gormDB)
 	userServiceImpl := service.UserServiceInit(userRepositoryImpl)
 	userControllerImpl := controller.UserControllerInit(userServiceImpl)
-	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB)
+	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB, paginator)
 	n2VocabularyServiceImpl := service.N2VocabularyServiceInit(n2VocabularyRepositoryImpl)
 	n2VocabularyControllerImpl := controller.N2VocabularyControllerInit(n2VocabularyServiceImpl)
 	

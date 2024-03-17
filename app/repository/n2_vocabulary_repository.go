@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gin-gonic-api/app/domain/dao"
+	"gin-gonic-api/app/pkg"
 
 	log "github.com/sirupsen/logrus"
 
@@ -13,13 +14,16 @@ type N2VocabularyRepository interface {
 }
 
 type N2VocabularyRepositoryImpl struct {
-	db *gorm.DB
+	db        *gorm.DB
+	paginator *pkg.Paginator
 }
 
 func (i N2VocabularyRepositoryImpl) GetList() ([]dao.N2Vocabulary, error) {
 	var iterms []dao.N2Vocabulary
 
-	var err = i.db.Find(&iterms).Error
+	var err = i.db.Scopes(i.paginator.GormPagination()).Find(&iterms).Error
+
+	print(iterms, "dddddddddddddddddd")
 
 	if err != nil {
 		log.Error("Got an error finding n2 vocabulary", err)
@@ -28,8 +32,9 @@ func (i N2VocabularyRepositoryImpl) GetList() ([]dao.N2Vocabulary, error) {
 	return iterms, nil
 }
 
-func N2VocabularyRepositoryInit(db *gorm.DB) *N2VocabularyRepositoryImpl {
+func N2VocabularyRepositoryInit(db *gorm.DB, paginator *pkg.Paginator) *N2VocabularyRepositoryImpl {
 	return &N2VocabularyRepositoryImpl{
-		db: db,
+		db:        db,
+		paginator: paginator,
 	}
 }
