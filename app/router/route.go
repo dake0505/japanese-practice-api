@@ -23,7 +23,7 @@ func Init(init *config.Initialization) *gin.Engine {
 
 		n2Vocabulary := api.Group("/n2Vocabulary")
 		n2Vocabulary.GET("/list", init.N2VocabularyCtrl.GetList)
-		n2Vocabulary.GET("/:questionId", init.N2VocabularyCtrl.GetList)
+		n2Vocabulary.GET("/:questionId", init.N2VocabularyCtrl.GetQuestionById)
 	}
 
 	return router
