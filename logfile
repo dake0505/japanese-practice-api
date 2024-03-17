@@ -4,3 +4,47 @@
 2024-03-17 10:57:22.781 JST [72316] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
 2024-03-17 10:57:22.787 JST [72317] LOG:  database system was shut down at 2024-03-10 21:21:11 JST
 2024-03-17 10:57:22.791 JST [72316] LOG:  database system is ready to accept connections
+2024-03-17 16:05:32.230 JST [95549] ERROR:  column n2_vocabularies.deleted_at does not exist at character 39
+2024-03-17 16:05:32.230 JST [95549] STATEMENT:  SELECT * FROM "n2_vocabularies" WHERE "n2_vocabularies"."deleted_at" IS NULL LIMIT 10
+2024-03-17 16:05:32.233 JST [95549] ERROR:  column n2_vocabularies.deleted_at does not exist at character 39
+2024-03-17 16:05:32.233 JST [95549] STATEMENT:  SELECT * FROM "n2_vocabularies" WHERE "n2_vocabularies"."deleted_at" IS NULL LIMIT 10
+2024-03-17 16:05:51.128 JST [95640] ERROR:  column n2_vocabularies.deleted_at does not exist at character 39
+2024-03-17 16:05:51.128 JST [95640] STATEMENT:  SELECT * FROM "n2_vocabularies" WHERE "n2_vocabularies"."deleted_at" IS NULL LIMIT 10
+2024-03-17 16:05:51.132 JST [95640] ERROR:  column n2_vocabularies.deleted_at does not exist at character 39
+2024-03-17 16:05:51.132 JST [95640] STATEMENT:  SELECT * FROM "n2_vocabularies" WHERE "n2_vocabularies"."deleted_at" IS NULL LIMIT 10
+2024-03-17 16:07:06.412 JST [95913] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:07:06.412 JST [95913] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:07:54.664 JST [96064] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:07:54.664 JST [96064] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:10:04.219 JST [96340] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:10:04.219 JST [96340] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:10:09.438 JST [96412] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:10:09.438 JST [96412] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:10:26.051 JST [96493] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:10:26.051 JST [96493] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:10:26.913 JST [96493] ERROR:  relation "n2_vocabulary_subjects" does not exist at character 15
+2024-03-17 16:10:26.913 JST [96493] STATEMENT:  SELECT * FROM "n2_vocabulary_subjects" LIMIT 10
+2024-03-17 16:10:26.917 JST [96493] ERROR:  relation "n2_vocabulary_subjects" does not exist at character 15
+2024-03-17 16:10:26.917 JST [96493] STATEMENT:  SELECT * FROM "n2_vocabulary_subjects" LIMIT 10
+2024-03-17 16:16:14.875 JST [96950] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:16:14.875 JST [96950] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:16:17.477 JST [96950] ERROR:  relation "n2VocabularySubject" does not exist at character 15
+2024-03-17 16:16:17.477 JST [96950] STATEMENT:  SELECT * FROM "n2VocabularySubject" LIMIT 10
+2024-03-17 16:16:17.479 JST [96950] ERROR:  relation "n2VocabularySubject" does not exist at character 15
+2024-03-17 16:16:17.479 JST [96950] STATEMENT:  SELECT * FROM "n2VocabularySubject" LIMIT 10
+2024-03-17 16:16:35.467 JST [97036] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:16:35.467 JST [97036] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:17:08.764 JST [97137] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:17:08.764 JST [97137] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:17:24.727 JST [97219] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:17:24.727 JST [97219] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:26:52.995 JST [98003] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:26:52.995 JST [98003] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:26:56.656 JST [98070] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:26:56.656 JST [98070] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:26:59.609 JST [98129] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:26:59.609 JST [98129] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:27:05.441 JST [98209] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:27:05.441 JST [98209] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint
+2024-03-17 16:29:06.946 JST [98521] ERROR:  cannot cast type timestamp with time zone to bigint at character 77
+2024-03-17 16:29:06.946 JST [98521] STATEMENT:  ALTER TABLE "roles" ALTER COLUMN "deleted_at" TYPE bigint USING "deleted_at"::bigint

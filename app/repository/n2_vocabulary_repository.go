@@ -10,15 +10,28 @@ import (
 )
 
 type N2VocabularyRepository interface {
-	GetList(p *pkg.Paginator) ([]dao.N2Vocabulary, error)
+	GetList(p *pkg.Paginator) ([]dao.N2VocabularySubject, error)
+	GetQuestionById(p *pkg.Paginator) ([]dao.N2VocabularySubject, error)
 }
 
 type N2VocabularyRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func (i N2VocabularyRepositoryImpl) GetList(p *pkg.Paginator) ([]dao.N2Vocabulary, error) {
-	var iterms []dao.N2Vocabulary
+func (i N2VocabularyRepositoryImpl) GetList(p *pkg.Paginator) ([]dao.N2VocabularySubject, error) {
+	var iterms []dao.N2VocabularySubject
+
+	var err = i.db.Scopes(p.GormPagination()).Find(&iterms).Error
+
+	if err != nil {
+		log.Error("Got an error finding n2 vocabulary", err)
+		return nil, err
+	}
+	return iterms, nil
+}
+
+func (i N2VocabularyRepositoryImpl) GetQuestionById(p *pkg.Paginator) ([]dao.N2VocabularySubject, error) {
+	var iterms []dao.N2VocabularySubject
 
 	var err = i.db.Scopes(p.GormPagination()).Find(&iterms).Error
 

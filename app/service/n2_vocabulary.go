@@ -12,6 +12,7 @@ import (
 
 type N2VocabularyService interface {
 	GetList(c *gin.Context, p *pkg.Paginator)
+	GetQuestionById(c *gin.Context, p *pkg.Paginator)
 }
 
 type N2VocabularyServiceImpl struct {
@@ -24,6 +25,21 @@ func (n N2VocabularyServiceImpl) GetList(c *gin.Context, p *pkg.Paginator) {
 	log.Info("start to execute program get all n2 vocabulary list")
 
 	data, err := n.n2VocabularyRepository.GetList(p)
+
+	if err != nil {
+		log.Error("Happened Error when find all n2 vocabulary list. Error: ", err)
+		pkg.PanicException((constant.UnknownError))
+	}
+
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
+}
+
+func (n N2VocabularyServiceImpl) GetQuestionById(c *gin.Context, p *pkg.Paginator) {
+	defer pkg.PanicHandler(c)
+
+	log.Info("start to execute program get all n2 vocabulary list")
+
+	data, err := n.n2VocabularyRepository.GetQuestionById(p)
 
 	if err != nil {
 		log.Error("Happened Error when find all n2 vocabulary list. Error: ", err)
