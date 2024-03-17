@@ -26,7 +26,8 @@ func Init(init *config.Initialization) *gin.Engine {
 		n2Vocabulary.GET("/:questionId", init.N2VocabularyCtrl.GetQuestionById)
 
 		questionOption := api.Group("/operation")
-		questionOption.GET("/next", init.OperationCtrl.Next)
+		questionOption.GET("/next/:id", init.OperationCtrl.Next)
+		questionOption.GET("/pre/:id", init.OperationCtrl.Pre)
 	}
 
 	return router
