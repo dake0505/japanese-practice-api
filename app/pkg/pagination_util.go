@@ -16,12 +16,10 @@ type Paginator struct {
 
 func PaginatorHandler(c *gin.Context) *Paginator {
 	var p = &Paginator{}
-	p.Page, p.Size = cast.ToInt(c.Query("page")), cast.ToInt(c.Query("limit"))
-	//默认分页
+	p.Page, p.Size = cast.ToInt(c.Query("page")), cast.ToInt(c.Query("size"))
 	if p.Page == 0 || p.Size == 0 {
 		p.Page, p.Size = 1, 10
 	}
-	//计算偏移量
 	p.Offset = (p.Page - 1) * p.Size
 	return p
 }
