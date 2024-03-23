@@ -10,3 +10,4 @@ WORKDIR /app
 COPY --from=builder /app/japanese-practice-api .
 EXPOSE 8080
 ENTRYPOINT ["./japanese-practice-api"]
+
