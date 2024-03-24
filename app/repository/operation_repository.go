@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"gin-gonic-api/app/domain/dao"
+	dao "gin-gonic-api/app/domain/dao/vocabulary"
 
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
