@@ -5,6 +5,7 @@ import (
 	"gin-gonic-api/app/domain/dao/vocabulary"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/driver/postgres"
@@ -28,14 +29,24 @@ func ConnectToDB() *gorm.DB {
 		log.Fatal("Error connecting to database. Error: ", err)
 	}
 
-	allMigration := []*gormigrate.Migration{}
-	allMigration = append(allMigration, vocabulary.Migration()...)
+	doMigrate, err := strconv.ParseBool(os.Getenv("DO_MIGRATE"))
 
-	m := gormigrate.New(db, gormigrate.DefaultOptions, allMigration)
-	if err := m.Migrate(); err != nil {
-		log.Fatalf("Could not migrate: %v", err)
+	if err != nil {
+		doMigrate = false
 	}
-	log.Println("Migration did run successfully")
+
+	if doMigrate {
+		allMigration := []*gormigrate.Migration{}
+		allMigration = append(allMigration, vocabulary.Migration()...)
+
+		m := gormigrate.New(db, gormigrate.DefaultOptions, allMigration)
+		if err := m.Migrate(); err != nil {
+			log.Fatalf("Could not migrate: %v", err)
+		}
+		log.Println("Migration did run successfully")
+	} else {
+		log.Println("Skipping migrations...")
+	}
 
 	return db
 }
