@@ -2,13 +2,15 @@ package repository
 
 import (
 	"gin-gonic-api/app/domain/dao"
+
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type UserRepository interface {
 	FindAllUser() ([]dao.User, error)
-	FindUserById(id int) (dao.User, error)
+	FindUserById(id string) (dao.User, error)
+	FindUserByEmail(email string) (dao.User, error)
 	Save(user *dao.User) (dao.User, error)
 	DeleteUserById(id int) error
 }
@@ -29,13 +31,25 @@ func (u UserRepositoryImpl) FindAllUser() ([]dao.User, error) {
 	return users, nil
 }
 
-func (u UserRepositoryImpl) FindUserById(id int) (dao.User, error) {
+func (u UserRepositoryImpl) FindUserById(id string) (dao.User, error) {
 	user := dao.User{
 		ID: id,
 	}
 	err := u.db.Preload("Role").First(&user).Error
 	if err != nil {
 		log.Error("Got and error when find user by id. Error: ", err)
+		return dao.User{}, err
+	}
+	return user, nil
+}
+
+func (u UserRepositoryImpl) FindUserByEmail(email string) (dao.User, error) {
+	user := dao.User{
+		Email: email,
+	}
+	err := u.db.Preload("Role").First(&user).Error
+	if err != nil {
+		log.Error("Got and error when find user by email. Error: ", err)
 		return dao.User{}, err
 	}
 	return user, nil

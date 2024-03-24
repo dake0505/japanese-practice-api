@@ -16,6 +16,7 @@ import (
 type UserService interface {
 	GetAllUser(c *gin.Context)
 	GetUserById(c *gin.Context)
+	GetUserByEmail(c *gin.Context)
 	AddUserData(c *gin.Context)
 	UpdateUserData(c *gin.Context)
 	DeleteUser(c *gin.Context)
@@ -29,7 +30,7 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program update user data by id")
-	userID, _ := strconv.Atoi(c.Param("userID"))
+	userID := (c.Param("userID"))
 
 	var request dao.User
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -43,10 +44,7 @@ func (u UserServiceImpl) UpdateUserData(c *gin.Context) {
 		pkg.PanicException(constant.DataNotFound)
 	}
 
-	data.RoleID = request.RoleID
 	data.Email = request.Email
-	data.Name = request.Password
-	data.Status = request.Status
 	u.userRepository.Save(&data)
 
 	if err != nil {
@@ -61,9 +59,24 @@ func (u UserServiceImpl) GetUserById(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 
 	log.Info("start to execute program get user by id")
-	userID, _ := strconv.Atoi(c.Param("userID"))
+	userID := (c.Param("userID"))
 
 	data, err := u.userRepository.FindUserById(userID)
+	if err != nil {
+		log.Error("Happened error when get data from database. Error", err)
+		pkg.PanicException(constant.DataNotFound)
+	}
+
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
+}
+
+func (u UserServiceImpl) GetUserByEmail(c *gin.Context) {
+	defer pkg.PanicHandler(c)
+
+	log.Info("start to execute program get user by email")
+	email := c.Param("email")
+
+	data, err := u.userRepository.FindUserByEmail(email)
 	if err != nil {
 		log.Error("Happened error when get data from database. Error", err)
 		pkg.PanicException(constant.DataNotFound)

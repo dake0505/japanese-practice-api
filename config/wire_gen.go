@@ -8,6 +8,7 @@ package config
 
 import (
 	"gin-gonic-api/app/controller"
+	"gin-gonic-api/app/firebase"
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/repository"
 	"gin-gonic-api/app/service"
@@ -19,10 +20,14 @@ import (
 
 func Init() *Initialization {
 	gormDB := ConnectToDB()
+  firebase := firebase.InitFirebase()
   paginator := &pkg.Paginator{}
 	userRepositoryImpl := repository.UserRepositoryInit(gormDB)
 	userServiceImpl := service.UserServiceInit(userRepositoryImpl)
 	userControllerImpl := controller.UserControllerInit(userServiceImpl)
+	authRepositoryImpl := repository.AuthRepositoryInit(gormDB, firebase)
+	authServiceImpl := service.AuthServiceInit(authRepositoryImpl)
+	authControllerImpl := controller.AuthControllerInit(authServiceImpl)
 	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB, paginator)
 	n2VocabularyServiceImpl := service.N2VocabularyServiceInit(n2VocabularyRepositoryImpl)
 	n2VocabularyControllerImpl := controller.N2VocabularyControllerInit(n2VocabularyServiceImpl)
@@ -31,7 +36,7 @@ func Init() *Initialization {
 	operationControllerImpl := controller.OperationControllerInit(operationServiceImpl)
 	
 	roleRepositoryImpl := repository.RoleRepositoryInit(gormDB)
-	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl)
+	initialization := NewInitialization(userRepositoryImpl,userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl,authRepositoryImpl, authControllerImpl, authServiceImpl)
 	return initialization
 }
 
