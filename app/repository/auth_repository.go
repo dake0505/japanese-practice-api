@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
-	"gin-gonic-api/app/domain/dao"
+	dao "gin-gonic-api/app/domain/dao/auth"
 
 	"firebase.google.com/go/auth"
 	log "github.com/sirupsen/logrus"

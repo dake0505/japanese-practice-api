@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"gin-gonic-api/app/constant"
-	"gin-gonic-api/app/domain/dao"
+	dao "gin-gonic-api/app/domain/dao/auth"
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/repository"
 )

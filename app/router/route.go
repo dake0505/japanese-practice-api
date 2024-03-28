@@ -1,7 +1,6 @@
 package router
 
 import (
-	"gin-gonic-api/app/middleware"
 	"gin-gonic-api/config"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +11,7 @@ func Init(init *config.Initialization) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	router.Use(middleware.AuthMiddleware())
+	// router.Use(middleware.AuthMiddleware())
 
 	api := router.Group("/api")
 	{
