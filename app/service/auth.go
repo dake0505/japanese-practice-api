@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -62,6 +63,8 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 	newUser.ID = uid
 	newUser.Email = email
 	newUser.Password = string(hashedPassword)
+
+	fmt.Printf("ID: %s, Email: %s, Password: %s\n", newUser.ID, newUser.Email, newUser.Password)
 
 	// Create a new user in the database
 	if _, err := a.authRepository.Save(&newUser); err != nil {

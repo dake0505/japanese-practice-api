@@ -190,3 +190,49 @@
 2024-03-24 19:27:10.109 JST [86436] STATEMENT:  SELECT * FROM "auth" ORDER BY "auth"."id" LIMIT $1
 2024-03-28 21:16:28.606 JST [3204] ERROR:  relation "auth" does not exist at character 15
 2024-03-28 21:16:28.606 JST [3204] STATEMENT:  SELECT * FROM "auth" ORDER BY "auth"."id" LIMIT $1
+2024-04-19 22:10:24.762 JST [4006] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:10:24.762 JST [4006] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:33:05.480 JST [5133] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:33:05.480 JST [5133] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:33:53.657 JST [5133] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:33:53.657 JST [5133] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:35:43.986 JST [5133] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:35:43.986 JST [5133] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:39:07.403 JST [6514] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:39:07.403 JST [6514] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:49:58.929 JST [6958] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:49:58.929 JST [6958] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:51:37.071 JST [7729] ERROR:  there is no unique or exclusion constraint matching the ON CONFLICT specification
+2024-04-19 22:51:37.071 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:56:11.382 JST [7729] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 22:56:11.382 JST [7729] DETAIL:  Key (email)=() already exists.
+2024-04-19 22:56:11.382 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:56:56.758 JST [7729] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 22:56:56.758 JST [7729] DETAIL:  Key (email)=() already exists.
+2024-04-19 22:56:56.758 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:58:13.687 JST [7729] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 22:58:13.687 JST [7729] DETAIL:  Key (email)=() already exists.
+2024-04-19 22:58:13.687 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 22:59:12.381 JST [8043] ERROR:  relation "auth_email_unique" already exists
+2024-04-19 22:59:12.381 JST [8043] STATEMENT:  ALTER TABLE auth ADD CONSTRAINT auth_email_unique UNIQUE (email)
+2024-04-19 23:01:19.889 JST [7729] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:01:19.889 JST [7729] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:01:19.889 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:03:58.354 JST [7729] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:03:58.354 JST [7729] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:03:58.354 JST [7729] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:07:09.658 JST [8875] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:07:09.658 JST [8875] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:07:09.658 JST [8875] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:09:05.221 JST [9051] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:09:05.221 JST [9051] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:09:05.221 JST [9051] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:09:54.679 JST [9155] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:09:54.679 JST [9155] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:09:54.679 JST [9155] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:11:01.200 JST [9386] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:11:01.200 JST [9386] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:11:01.200 JST [9386] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"
+2024-04-19 23:11:39.944 JST [9506] ERROR:  duplicate key value violates unique constraint "auth_email_unique"
+2024-04-19 23:11:39.944 JST [9506] DETAIL:  Key (email)=() already exists.
+2024-04-19 23:11:39.944 JST [9506] STATEMENT:  INSERT INTO "auth" ("id","email") VALUES ($1,$2) ON CONFLICT ("id") DO UPDATE SET "email"="excluded"."email"

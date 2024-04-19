@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	dao "gin-gonic-api/app/domain/dao/auth"
 
-	"firebase.google.com/go/auth"
+	firebase "firebase.google.com/go"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -21,7 +21,7 @@ type AuthRepository interface {
 
 type AuthRepositoryImpl struct {
 	db       *gorm.DB
-	fireAuth *auth.Client
+	fireAuth *firebase.App
 }
 
 func (a AuthRepositoryImpl) Login(auth *dao.Auth) (dao.Auth, error) {
@@ -55,21 +55,27 @@ func (a AuthRepositoryImpl) FindAuthByEmail(email string) (dao.Auth, error) {
 }
 
 func (a AuthRepositoryImpl) FindToken(email string) (string, error) {
-	token, err := a.fireAuth.CustomToken(context.Background(), email)
+	client, err := a.fireAuth.Auth(context.Background())
+	token, err := client.CustomToken(context.Background(), email)
 	if err != nil {
 		log.Printf("failed to generate custom token: %v", err)
 	}
 	return token, err
 }
 
-func (a AuthRepositoryImpl) CreateToken(uid string) (string, error) {
-	// Create a custom token for the user using the Firebase Admin SDK
-	customToken, err := a.fireAuth.CustomToken(context.Background(), uid)
+func (a *AuthRepositoryImpl) CreateToken(uid string) (string, error) {
+	client, err := a.fireAuth.Auth(context.Background())
 	if err != nil {
-		log.Printf("failed to create custom token for user: %v", err)
-		errors.New("internal server error")
+		log.Errorf("Failed to get Firebase auth client: %v", err)
+		return "", fmt.Errorf("failed to get Firebase auth client: %v", err)
 	}
-	return customToken, err
+
+	customToken, err := client.CustomToken(context.Background(), uid)
+	if err != nil {
+		log.Errorf("Failed to create custom token for user: %v", err)
+		return "", fmt.Errorf("failed to create custom token for user: %v", err)
+	}
+	return customToken, nil
 }
 
 func (a AuthRepositoryImpl) Save(auth *dao.Auth) (dao.Auth, error) {
@@ -81,7 +87,7 @@ func (a AuthRepositoryImpl) Save(auth *dao.Auth) (dao.Auth, error) {
 	return *auth, nil
 }
 
-func AuthRepositoryInit(db *gorm.DB, fireAuth *auth.Client) *AuthRepositoryImpl {
+func AuthRepositoryInit(db *gorm.DB, fireAuth *firebase.App) *AuthRepositoryImpl {
 	//db.AutoMigrate(&dao.User{})
 	return &AuthRepositoryImpl{
 		db:       db,

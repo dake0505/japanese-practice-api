@@ -13,7 +13,9 @@ func AuthMiddleware() gin.HandlerFunc {
 		idToken := c.GetHeader("Authorization")
 		app := firebase.InitFirebase()
 
-		token, err := app.VerifyIDToken(context.Background(), idToken)
+		client, err := app.Auth(c)
+
+		token, err := client.VerifyIDToken(context.Background(), idToken)
 
 		println(token, "tokentokentoken")
 		if err != nil {
