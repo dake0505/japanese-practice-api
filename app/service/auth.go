@@ -30,14 +30,25 @@ type AuthServiceImpl struct {
 }
 
 func (a AuthServiceImpl) Login(c *gin.Context) {
-	email := (c.Param("email"))
-	// Get the user from the database
+	var request dao.Auth
+	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Error("Happened error when mapping request from FE. Error", err)
+		pkg.PanicException(constant.InvalidRequest)
+	}
+	email := request.Email
+	password := request.Password
 	data, err := a.authRepository.FindAuthByEmail(email)
 	if err != nil {
 		log.Printf("failed to get user by email from database: %v", err)
 	}
 
-	token, err := a.authRepository.FindToken(data.Email)
+	err = bcrypt.CompareHashAndPassword([]byte(data.Password), []byte(password))
+	if err != nil {
+		log.Printf("password does not match: %v", err)
+	}
+	client, err := a.fireAuth.Auth(context.Background())
+	u, err := client.GetUserByEmail(c, email)
+	token, err := a.authRepository.CreateToken(u.UID)
 
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": token}))
 }
@@ -75,8 +86,7 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 	params := (&auth.UserToCreate{}).
 		Email(email).
 		EmailVerified(false).
-		PhoneNumber("+15555550100").
-		Password("12345678").
+		Password(string(hashedPassword)).
 		DisplayName("John").
 		PhotoURL("http://www.example.com/12345678/photo.png").
 		Disabled(false)
@@ -89,9 +99,7 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 		log.Fatalf("error creating user: %v\n", err)
 	}
 	log.Printf("Successfully created user: %v\n", u)
-
-	customToken, err := a.authRepository.CreateToken(uid)
-	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": customToken}))
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, "OK"))
 }
 
 func AuthServiceInit(authRepository repository.AuthRepository, fireAuth *firebase.App) *AuthServiceImpl {

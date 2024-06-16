@@ -31,7 +31,7 @@ func Init(init *config.Initialization) *gin.Engine {
 		questionOption.GET("/pre/:id", init.OperationCtrl.Pre)
 
 		auth := api.Group("/auth")
-		auth.GET("/login", init.AuthCtrl.Login)
+		auth.POST("/login", init.AuthCtrl.Login)
 		auth.POST("/register", init.AuthCtrl.Register)
 	}
 
