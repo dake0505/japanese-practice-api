@@ -33,6 +33,9 @@ func Init(init *config.Initialization) *gin.Engine {
 		auth := api.Group("/auth")
 		auth.POST("/login", init.AuthCtrl.Login)
 		auth.POST("/register", init.AuthCtrl.Register)
+
+		questionType := api.Group("/type")
+		questionType.GET("/list", init.TypeCtrl.GetTypeList)
 	}
 
 	return router

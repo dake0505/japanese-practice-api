@@ -20,6 +20,9 @@ type Initialization struct {
 	authRepo            repository.AuthRepository
 	authSvc             service.AuthService
 	AuthCtrl            controller.AuthController
+	typeRepo            repository.TypeRepository
+	typeSvc             service.TypeService
+	TypeCtrl            controller.TypeContoller
 }
 
 func NewInitialization(
@@ -38,6 +41,11 @@ func NewInitialization(
 	authRepo repository.AuthRepository,
 	authSvc service.AuthService,
 	authCtrl controller.AuthController,
+
+	typeRepo repository.TypeRepository,
+	typeSvc service.TypeService,
+	typeCtrl controller.TypeContoller,
+
 ) *Initialization {
 	return &Initialization{
 		userRepo:            userRepo,
@@ -53,5 +61,8 @@ func NewInitialization(
 		authRepo:            authRepo,
 		authSvc:             authSvc,
 		AuthCtrl:            authCtrl,
+		typeRepo:            typeRepo,
+		typeSvc:             typeSvc,
+		TypeCtrl:            typeCtrl,
 	}
 }
