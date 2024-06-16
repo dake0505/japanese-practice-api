@@ -16,7 +16,7 @@ type AuthRepository interface {
 	FindAuthByEmail(email string) (dao.Auth, error)
 	FindToken(email string) (string, error)
 	CreateToken(uid string) (string, error)
-	Save(auth *dao.Auth) (dao.Auth, error)
+	CreateUser(auth *dao.Auth) (dao.Auth, error)
 }
 
 type AuthRepositoryImpl struct {
@@ -78,7 +78,7 @@ func (a *AuthRepositoryImpl) CreateToken(uid string) (string, error) {
 	return customToken, nil
 }
 
-func (a AuthRepositoryImpl) Save(auth *dao.Auth) (dao.Auth, error) {
+func (a AuthRepositoryImpl) CreateUser(auth *dao.Auth) (dao.Auth, error) {
 	var err = a.db.Save(auth).Error
 	if err != nil {
 		log.Error("Got an error when save auth. Error: ", err)

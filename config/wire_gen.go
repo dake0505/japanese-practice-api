@@ -26,7 +26,7 @@ func Init() *Initialization {
 	userServiceImpl := service.UserServiceInit(userRepositoryImpl)
 	userControllerImpl := controller.UserControllerInit(userServiceImpl)
 	authRepositoryImpl := repository.AuthRepositoryInit(gormDB, firebase)
-	authServiceImpl := service.AuthServiceInit(authRepositoryImpl)
+	authServiceImpl := service.AuthServiceInit(authRepositoryImpl, firebase)
 	authControllerImpl := controller.AuthControllerInit(authServiceImpl)
 	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB, paginator)
 	n2VocabularyServiceImpl := service.N2VocabularyServiceInit(n2VocabularyRepositoryImpl)

@@ -1,10 +1,13 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
 
+	firebase "firebase.google.com/go"
+	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
@@ -23,6 +26,7 @@ type AuthService interface {
 
 type AuthServiceImpl struct {
 	authRepository repository.AuthRepository
+	fireAuth       *firebase.App
 }
 
 func (a AuthServiceImpl) Login(c *gin.Context) {
@@ -39,20 +43,19 @@ func (a AuthServiceImpl) Login(c *gin.Context) {
 }
 
 func (a AuthServiceImpl) Register(c *gin.Context) {
-	email := (c.Param("email"))
-	password := (c.Param("password"))
-	// Check if the user with the email already exists
-
+	var request dao.Auth
+	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Error("Happened error when mapping request from FE. Error", err)
+		pkg.PanicException(constant.InvalidRequest)
+	}
+	email := request.Email
+	password := request.Password
 	data, err := a.authRepository.FindAuthByEmail(email)
-
 	if data.Email != "" {
 		errors.New("user with email already exists")
 	}
 
-	// Generate a UUID for the new user
 	uid := uuid.New().String()
-
-	// Generate a hash of the user's password using bcrypt
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Printf("failed to hash password: %v", err)
@@ -63,22 +66,37 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 	newUser.ID = uid
 	newUser.Email = email
 	newUser.Password = string(hashedPassword)
-
 	fmt.Printf("ID: %s, Email: %s, Password: %s\n", newUser.ID, newUser.Email, newUser.Password)
-
-	// Create a new user in the database
-	if _, err := a.authRepository.Save(&newUser); err != nil {
+	if _, err := a.authRepository.CreateUser(&newUser); err != nil {
 		log.Printf("failed to insert user into database: %v", err)
 		errors.New("internal server error")
 	}
 
-	customToken, err := a.authRepository.CreateToken(uid)
+	params := (&auth.UserToCreate{}).
+		Email(email).
+		EmailVerified(false).
+		PhoneNumber("+15555550100").
+		Password("12345678").
+		DisplayName("John").
+		PhotoURL("http://www.example.com/12345678/photo.png").
+		Disabled(false)
+	client, err := a.fireAuth.Auth(context.Background())
+	if err != nil {
+		log.Errorf("Failed to get Firebase auth client: %v", err)
+	}
+	u, err := client.CreateUser(c, params)
+	if err != nil {
+		log.Fatalf("error creating user: %v\n", err)
+	}
+	log.Printf("Successfully created user: %v\n", u)
 
+	customToken, err := a.authRepository.CreateToken(uid)
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": customToken}))
 }
 
-func AuthServiceInit(authRepository repository.AuthRepository) *AuthServiceImpl {
+func AuthServiceInit(authRepository repository.AuthRepository, fireAuth *firebase.App) *AuthServiceImpl {
 	return &AuthServiceImpl{
 		authRepository: authRepository,
+		fireAuth:       fireAuth,
 	}
 }

@@ -32,7 +32,7 @@ func Init(init *config.Initialization) *gin.Engine {
 
 		auth := api.Group("/auth")
 		auth.GET("/login", init.AuthCtrl.Login)
-		auth.GET("/register", init.AuthCtrl.Register)
+		auth.POST("/register", init.AuthCtrl.Register)
 	}
 
 	return router
