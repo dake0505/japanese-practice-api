@@ -1,6 +1,11 @@
 package answeritem
 
-import "gin-gonic-api/app/domain/dao"
+import (
+	"gin-gonic-api/app/domain/dao"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
 
 type AnswerItem struct {
 	ID         uint   `gorm:"primary_key" json:"id"`
@@ -12,4 +17,9 @@ type AnswerItem struct {
 
 func (AnswerItem) TableName() string {
 	return "answer_item"
+}
+
+func (item *AnswerItem) BeforeCreate(tx *gorm.DB) (err error) {
+	item.AnswerId = uuid.New().String()
+	return
 }

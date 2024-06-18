@@ -40,6 +40,10 @@ func Init(init *config.Initialization) *gin.Engine {
 		item := api.Group("/item")
 		item.GET("/list", init.ItemCtrl.GetItemList)
 		item.POST("/create", init.ItemCtrl.CreateQuestionItem)
+
+		answer := api.Group("/answer")
+		answer.GET("/list", init.AnswerCtrl.QueryAnswerList)
+		answer.POST("/create", init.AnswerCtrl.CreateAnswerItem)
 	}
 
 	return router
