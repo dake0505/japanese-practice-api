@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	questiontype "gin-gonic-api/app/domain/dao/question_type"
+	questionitem "gin-gonic-api/app/domain/dao/question_item"
 	"log"
 	"os"
 	"strconv"
@@ -39,7 +39,8 @@ func ConnectToDB() *gorm.DB {
 		allMigration := []*gormigrate.Migration{}
 		// allMigration = append(allMigration, vocabulary.Migration()...)
 		// allMigration = append(allMigration, auth.Migration()...)
-		allMigration = append(allMigration, questiontype.Migration()...)
+		// allMigration = append(allMigration, questiontype.Migration()...)
+		allMigration = append(allMigration, questionitem.Migration()...)
 
 		m := gormigrate.New(db, gormigrate.DefaultOptions, allMigration)
 		if err := m.Migrate(); err != nil {

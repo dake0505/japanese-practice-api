@@ -3,8 +3,10 @@ package main
 import (
 	"gin-gonic-api/app/router"
 	"gin-gonic-api/config"
-	"github.com/joho/godotenv"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func init() {
@@ -15,7 +17,7 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 
-	init := config.Init()
+	init := config.Init(&gin.Context{})
 	app := router.Init(init)
 
 	app.Run(":" + port)
