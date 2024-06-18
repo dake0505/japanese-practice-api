@@ -7,19 +7,22 @@ import (
 )
 
 type Initialization struct {
-	userRepo            repository.UserRepository
-	userSvc             service.UserService
-	UserCtrl            controller.UserController
-	RoleRepo            repository.RoleRepository
+	userRepo repository.UserRepository
+	userSvc  service.UserService
+	UserCtrl controller.UserController
+	RoleRepo repository.RoleRepository
+
 	n2VocabularyRepo    repository.N2VocabularyRepository
 	N2VocabularyCtrl    controller.N2VocabularyController
 	n2VocabularyService service.N2VocabularyService
-	operationRepo       repository.OperationRepository
-	OperationCtrl       controller.OperationController
-	operationSerivce    service.OperationService
-	authRepo            repository.AuthRepository
-	authSvc             service.AuthService
-	AuthCtrl            controller.AuthController
+
+	operationRepo    repository.OperationRepository
+	OperationCtrl    controller.OperationController
+	operationSerivce service.OperationService
+
+	authRepo repository.AuthRepository
+	authSvc  service.AuthService
+	AuthCtrl controller.AuthController
 
 	typeRepo repository.TypeRepository
 	typeSvc  service.TypeService
@@ -28,6 +31,10 @@ type Initialization struct {
 	itemRepo repository.ItemRepository
 	itemSvc  service.ItemService
 	ItemCtrl controller.ItemController
+
+	answerRepo repository.AnswerRepository
+	answerSvc  service.AnswerService
+	AnswerCtrl controller.AnswerController
 }
 
 func NewInitialization(
@@ -55,6 +62,10 @@ func NewInitialization(
 	itemRepo repository.ItemRepository,
 	itemSvc service.ItemService,
 	itemCtrl controller.ItemController,
+
+	answerRepo repository.AnswerRepository,
+	answerSvc service.AnswerService,
+	answerCtrl controller.AnswerController,
 ) *Initialization {
 	return &Initialization{
 		userRepo:            userRepo,
@@ -76,5 +87,8 @@ func NewInitialization(
 		itemRepo:            itemRepo,
 		itemSvc:             itemSvc,
 		ItemCtrl:            itemCtrl,
+		answerRepo:          answerRepo,
+		answerSvc:           answerSvc,
+		AnswerCtrl:          answerCtrl,
 	}
 }

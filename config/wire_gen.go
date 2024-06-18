@@ -41,7 +41,10 @@ func Init(ctx *gin.Context) *Initialization {
 	itemRepositoryImpl := repository.ItemRepositoryInit(gormDB)
 	itemServiceImpl := service.ItemServiceInit(itemRepositoryImpl)
 	itemControllerImpl := controller.ItemControllerInit(itemServiceImpl)
-	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl, authRepositoryImpl, authServiceImpl, authControllerImpl, typeRepositoryImpl, typeServiceImpl, typeControllerImpl, itemRepositoryImpl, itemServiceImpl, itemControllerImpl)
+	answerRepositoryImpl := repository.AnswerRepositoryInit(gormDB)
+	answerServiceImpl := service.AnswerServiceInit(answerRepositoryImpl)
+	answerControllerImpl := controller.AnswerControllerInit(answerServiceImpl)
+	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl, authRepositoryImpl, authServiceImpl, authControllerImpl, typeRepositoryImpl, typeServiceImpl, typeControllerImpl, itemRepositoryImpl, itemServiceImpl, itemControllerImpl, answerRepositoryImpl, answerServiceImpl, answerControllerImpl)
 	return initialization
 }
 
@@ -90,3 +93,9 @@ var typeRepoSet = wire.NewSet(repository.TypeRepositoryInit, wire.Bind(new(repos
 var typeServiceSet = wire.NewSet(service.TypeServiceInit, wire.Bind(new(service.TypeService), new(*service.TypeServiceImpl)))
 
 var typeCtrlSet = wire.NewSet(controller.TypeControllerInit, wire.Bind(new(controller.TypeController), new(*controller.TypeControllerImpl)))
+
+var answerRepoSet = wire.NewSet(repository.AnswerRepositoryInit, wire.Bind(new(repository.AnswerRepository), new(*repository.AnswerRepositoryImpl)))
+
+var answerServiceSet = wire.NewSet(service.AnswerServiceInit, wire.Bind(new(service.AnswerService), new(*service.AnswerServiceImpl)))
+
+var answerCtrlSet = wire.NewSet(controller.AnswerControllerInit, wire.Bind(new(controller.AnswerController), new(*controller.AnswerControllerImpl)))
