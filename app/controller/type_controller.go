@@ -6,20 +6,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type TypeContoller interface {
+type TypeController interface {
 	GetTypeList(c *gin.Context)
 }
 
-type TypeContollerImpl struct {
+type TypeControllerImpl struct {
 	svc service.TypeService
 }
 
-func (t TypeContollerImpl) GetTypeList(c *gin.Context) {
+func (t TypeControllerImpl) GetTypeList(c *gin.Context) {
 	t.svc.GetTypeList(c)
 }
 
-func TypeContollerInit(typeService service.TypeService) *TypeContollerImpl {
-	return &TypeContollerImpl{
+func TypeControllerInit(typeService service.TypeService) *TypeControllerImpl {
+	return &TypeControllerImpl{
 		svc: typeService,
 	}
 }
