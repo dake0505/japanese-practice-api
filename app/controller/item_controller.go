@@ -13,6 +13,7 @@ import (
 type ItemController interface {
 	GetItemList(c *gin.Context)
 	CreateQuestionItem(c *gin.Context)
+	UpdateQuestionItem(c *gin.Context)
 }
 
 type ItemControllerImpl struct {
@@ -35,6 +36,22 @@ func (i ItemControllerImpl) CreateQuestionItem(c *gin.Context) {
 		AnswerId:      body.AnswerId,
 	}
 	res := i.svc.CreateQuestionItem(newItem)
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, res))
+}
+
+func (i ItemControllerImpl) UpdateQuestionItem(c *gin.Context) {
+	var body dto.UpdateItemRequest
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	newItem := dto.UpdateItemRequest{
+		QuestionID:    body.QuestionID,
+		ID:            body.ID,
+		AnswerId:      body.AnswerId,
+		QuestionTitle: body.QuestionTitle,
+	}
+	res := i.svc.UpdateQuestionItem(newItem)
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, res))
 }
 

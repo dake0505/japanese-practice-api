@@ -2,6 +2,7 @@ package repository
 
 import (
 	dao "gin-gonic-api/app/domain/dao/question_type"
+	"gin-gonic-api/app/domain/dto"
 
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -9,6 +10,7 @@ import (
 
 type TypeRepository interface {
 	GetTypeList() ([]dao.QuestionType, error)
+	CreateType(item *dto.CreateTypeDto) (dao.QuestionType, error)
 }
 
 type TypeRepositoryImpl struct {
@@ -22,8 +24,18 @@ func (t TypeRepositoryImpl) GetTypeList() ([]dao.QuestionType, error) {
 		log.Error("Got an error finding all couples. Error: ", err)
 		return nil, err
 	}
-	log.Println(types, "lllllllllllllllll")
 	return types, nil
+}
+
+func (t TypeRepositoryImpl) CreateType(item *dto.CreateTypeDto) (dao.QuestionType, error) {
+	questionType := dao.QuestionType{
+		TypeName: item.TypeName,
+	}
+	err := t.db.Create(&questionType).Error
+	if err != nil {
+		return dao.QuestionType{}, err
+	}
+	return questionType, nil
 }
 
 func TypeRepositoryInit(db *gorm.DB) *TypeRepositoryImpl {

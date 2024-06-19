@@ -5,9 +5,9 @@ import (
 )
 
 type BaseModel struct {
-	CreatedAt time.Time `gorm:"->:false;column:created_at" json:"-"`
-	UpdatedAt time.Time `gorm:"->:false;column:updated_at" json:"-"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"column:updated_at" json:"updatedAt"`
 	// DeletedAt gorm.DeletedAt `gorm:"->:false;column:deleted_at" json:"-"`
-	CreatedBy int `gorm:"->:false;column:created_by" json:"-"`
-	UpdatedBy int `gorm:"->:false;column:deleted_at" json:"-"`
+	CreatedBy string `gorm:"->:false;column:created_by" json:"createdBy"`
+	UpdatedBy string `gorm:"->:false;column:deleted_at" json:"updatedBy"`
 }

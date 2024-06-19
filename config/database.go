@@ -4,6 +4,7 @@ import (
 	"fmt"
 	answeritem "gin-gonic-api/app/domain/dao/answer_item"
 	questionitem "gin-gonic-api/app/domain/dao/question_item"
+	questiontype "gin-gonic-api/app/domain/dao/question_type"
 	"log"
 	"os"
 	"strconv"
@@ -40,7 +41,7 @@ func ConnectToDB() *gorm.DB {
 		allMigration := []*gormigrate.Migration{}
 		// allMigration = append(allMigration, vocabulary.Migration()...)
 		// allMigration = append(allMigration, auth.Migration()...)
-		// allMigration = append(allMigration, questiontype.Migration()...)
+		allMigration = append(allMigration, questiontype.Migration()...)
 		allMigration = append(allMigration, questionitem.Migration()...)
 		allMigration = append(allMigration, answeritem.Migration()...)
 

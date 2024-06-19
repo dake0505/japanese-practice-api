@@ -36,10 +36,12 @@ func Init(init *config.Initialization) *gin.Engine {
 
 		questionType := api.Group("/type")
 		questionType.GET("/list", init.TypeCtrl.GetTypeList)
+		questionType.POST("/create", init.TypeCtrl.CreateType)
 
 		item := api.Group("/item")
 		item.GET("/list", init.ItemCtrl.GetItemList)
 		item.POST("/create", init.ItemCtrl.CreateQuestionItem)
+		item.PUT("/update", init.ItemCtrl.UpdateQuestionItem)
 
 		answer := api.Group("/answer")
 		answer.GET("/list", init.AnswerCtrl.QueryAnswerList)

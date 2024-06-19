@@ -2,6 +2,7 @@ package answeritem
 
 import (
 	"gin-gonic-api/app/domain/dao"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -21,5 +22,12 @@ func (AnswerItem) TableName() string {
 
 func (item *AnswerItem) BeforeCreate(tx *gorm.DB) (err error) {
 	item.AnswerId = uuid.New().String()
+	item.CreatedAt = time.Now()
+	item.UpdatedAt = time.Now()
+	return
+}
+
+func (item *AnswerItem) BeforeUpdate(tx *gorm.DB) (err error) {
+	item.UpdatedAt = time.Now()
 	return
 }

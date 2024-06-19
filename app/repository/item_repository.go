@@ -9,6 +9,7 @@ import (
 type ItemRepository interface {
 	GetItemList() []dao.QuestionItem
 	CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
+	UpdateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
 }
 
 type ItemRepositoryImpl struct {
@@ -25,6 +26,14 @@ func (i ItemRepositoryImpl) GetItemList() []dao.QuestionItem {
 
 func (i ItemRepositoryImpl) CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem {
 	var err = i.db.Create(item).Error
+	if err != nil {
+
+	}
+	return *item
+}
+
+func (i ItemRepositoryImpl) UpdateQuestionItem(item *dao.QuestionItem) dao.QuestionItem {
+	var err = i.db.Save(item).Error
 	if err != nil {
 
 	}

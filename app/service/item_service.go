@@ -14,6 +14,7 @@ import (
 type ItemService interface {
 	GetItemList(c *gin.Context)
 	CreateQuestionItem(item dto.CreateItemRequest) dao.QuestionItem
+	UpdateQuestionItem(item dto.UpdateItemRequest) dao.QuestionItem
 }
 
 type ItemServiceImpl struct {
@@ -32,6 +33,17 @@ func (i ItemServiceImpl) CreateQuestionItem(item dto.CreateItemRequest) dao.Ques
 		AnswerId:      item.AnswerId,
 	}
 	data := i.itemRepository.CreateQuestionItem(&input)
+	return data
+}
+
+func (i ItemServiceImpl) UpdateQuestionItem(item dto.UpdateItemRequest) dao.QuestionItem {
+	input := dao.QuestionItem{
+		QuestionID:    item.QuestionID,
+		ID:            item.ID,
+		AnswerId:      item.AnswerId,
+		QuestionTitle: item.QuestionTitle,
+	}
+	data := i.itemRepository.UpdateQuestionItem(&input)
 	return data
 }
 
