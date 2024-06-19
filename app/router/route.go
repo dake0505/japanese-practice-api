@@ -40,6 +40,7 @@ func Init(init *config.Initialization) *gin.Engine {
 
 		item := api.Group("/item")
 		item.GET("/list", init.ItemCtrl.GetItemList)
+		item.GET("/detail", init.ItemCtrl.QueryItemDetail)
 		item.POST("/create", init.ItemCtrl.CreateQuestionItem)
 		item.PUT("/update", init.ItemCtrl.UpdateQuestionItem)
 

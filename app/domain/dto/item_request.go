@@ -15,3 +15,16 @@ type UpdateItemRequest struct {
 type CreateTypeDto struct {
 	TypeName string `json:"typeName"`
 }
+
+type QuestionDetailDto struct {
+	ID            uint         `json:"id"`
+	QuestionID    string       `json:"questionId"`
+	QuestionTitle string       `json:"questionTitle"`
+	AnswerId      string       `json:"answerId"`
+	AnswerItems   []AnswerItem `json:"answerItems"`
+}
+
+type AnswerItem struct {
+	AnswerId   string `json:"answerId"`
+	AnswerDesc string `json:"answerDesc"`
+}

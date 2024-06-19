@@ -10,6 +10,7 @@ type ItemRepository interface {
 	GetItemList() []dao.QuestionItem
 	CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
 	UpdateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
+	QueryQuestionDetail(id uint) dao.QuestionItem
 }
 
 type ItemRepositoryImpl struct {
@@ -22,6 +23,15 @@ func (i ItemRepositoryImpl) GetItemList() []dao.QuestionItem {
 	if err != nil {
 	}
 	return items
+}
+
+func (i ItemRepositoryImpl) QueryQuestionDetail(id uint) dao.QuestionItem {
+	var questionItem dao.QuestionItem
+	err := i.db.First(&questionItem, id).Error
+	if err != nil {
+		return dao.QuestionItem{}
+	}
+	return questionItem
 }
 
 func (i ItemRepositoryImpl) CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem {

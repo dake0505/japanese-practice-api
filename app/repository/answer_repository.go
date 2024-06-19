@@ -9,6 +9,7 @@ import (
 type AnswerRepository interface {
 	CreateAnswerItem(item *dao.AnswerItem) dao.AnswerItem
 	QueryAnswerList() []dao.AnswerItem
+	QueryAnswerListByQuestionId(questionId string) []dao.AnswerItem
 }
 
 type AnswerRepositoryImpl struct {
@@ -28,6 +29,15 @@ func (a AnswerRepositoryImpl) QueryAnswerList() []dao.AnswerItem {
 	if err != nil {
 	}
 	return *&items
+}
+
+func (a AnswerRepositoryImpl) QueryAnswerListByQuestionId(questionId string) []dao.AnswerItem {
+	var items []dao.AnswerItem
+	err := a.db.Where("question_id = ?", questionId).Find(&items).Error
+	if err != nil {
+		return nil
+	}
+	return items
 }
 
 func AnswerRepositoryInit(db *gorm.DB) *AnswerRepositoryImpl {

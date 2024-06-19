@@ -15,15 +15,35 @@ type ItemService interface {
 	GetItemList(c *gin.Context)
 	CreateQuestionItem(item dto.CreateItemRequest) dao.QuestionItem
 	UpdateQuestionItem(item dto.UpdateItemRequest) dao.QuestionItem
+	QueryQuestionDetail(id uint) dto.QuestionDetailDto
 }
 
 type ItemServiceImpl struct {
-	itemRepository repository.ItemRepository
+	itemRepository   repository.ItemRepository
+	answerRepository repository.AnswerRepository
 }
 
 func (i ItemServiceImpl) GetItemList(c *gin.Context) {
 	data := i.itemRepository.GetItemList()
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
+}
+
+func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
+	questionInfo := i.itemRepository.QueryQuestionDetail(id)
+	answerList := i.answerRepository.QueryAnswerListByQuestionId(questionInfo.QuestionID)
+	answerDtos := make([]dto.AnswerItem, len(answerList))
+	for i, answer := range answerList {
+		answerDtos[i] = dto.AnswerItem{
+			AnswerId:   answer.AnswerId,
+			AnswerDesc: answer.AnswerDesc,
+		}
+	}
+	questionDetail := dto.QuestionDetailDto{
+		QuestionID:    questionInfo.QuestionID,
+		QuestionTitle: questionInfo.QuestionTitle,
+		AnswerItems:   answerDtos,
+	}
+	return questionDetail
 }
 
 func (i ItemServiceImpl) CreateQuestionItem(item dto.CreateItemRequest) dao.QuestionItem {
@@ -47,8 +67,9 @@ func (i ItemServiceImpl) UpdateQuestionItem(item dto.UpdateItemRequest) dao.Ques
 	return data
 }
 
-func ItemServiceInit(itemRepository repository.ItemRepository) *ItemServiceImpl {
+func ItemServiceInit(itemRepository repository.ItemRepository, answerRepository repository.AnswerRepository) *ItemServiceImpl {
 	return &ItemServiceImpl{
-		itemRepository: itemRepository,
+		itemRepository:   itemRepository,
+		answerRepository: answerRepository,
 	}
 }
