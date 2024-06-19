@@ -3,13 +3,11 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 
@@ -48,9 +46,8 @@ func (a AuthServiceImpl) Login(c *gin.Context) {
 	}
 	client, err := a.fireAuth.Auth(context.Background())
 	u, err := client.GetUserByEmail(c, email)
-	token, err := a.authRepository.CreateToken(u.UID)
-
-	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": token}))
+	customToken, err := client.CustomToken(c.Request.Context(), u.UID)
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": customToken}))
 }
 
 func (a AuthServiceImpl) Register(c *gin.Context) {
@@ -65,8 +62,6 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 	if data.Email != "" {
 		errors.New("user with email already exists")
 	}
-
-	uid := uuid.New().String()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Printf("failed to hash password: %v", err)
@@ -74,10 +69,8 @@ func (a AuthServiceImpl) Register(c *gin.Context) {
 	}
 
 	var newUser dao.Auth
-	newUser.ID = uid
 	newUser.Email = email
 	newUser.Password = string(hashedPassword)
-	fmt.Printf("ID: %s, Email: %s, Password: %s\n", newUser.ID, newUser.Email, newUser.Password)
 	if _, err := a.authRepository.CreateUser(&newUser); err != nil {
 		log.Printf("failed to insert user into database: %v", err)
 		errors.New("internal server error")

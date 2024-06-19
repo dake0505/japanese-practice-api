@@ -39,6 +39,7 @@ func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
 		}
 	}
 	questionDetail := dto.QuestionDetailDto{
+		ID:            questionInfo.ID,
 		QuestionID:    questionInfo.QuestionID,
 		QuestionTitle: questionInfo.QuestionTitle,
 		AnswerItems:   answerDtos,
