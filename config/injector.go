@@ -107,7 +107,19 @@ var answerCtrlSet = wire.NewSet(controller.AnswerControllerInit,
 	wire.Bind(new(controller.AnswerController), new(*controller.AnswerControllerImpl)),
 )
 
+var recordRepoSet = wire.NewSet(repository.RecordRepositoryInit,
+	wire.Bind(new(repository.RecordRepository), new(*repository.RecordRepositoryImpl)),
+)
+
+var recordServiceSet = wire.NewSet(service.RecordServiceInit,
+	wire.Bind(new(service.RecordService), new(*service.RecordServiceImpl)),
+)
+
+var recordCtrlSet = wire.NewSet(controller.RecordControllerInit,
+	wire.Bind(new(controller.RecordController), new(*controller.RecordControllerImpl)),
+)
+
 func Init(ctx *gin.Context) *Initialization {
-	wire.Build(NewInitialization, db, paginatorSet, firebaseSet, userCtrlSet, userServiceSet, userRepoSet, roleRepoSet, itemRepoSet, itemCtrlSet, itemServiceSet, n2VocabularyRepoSet, n2VocabularyServiceSet, n2VocabularyCtrlSet, operationRepoSet, operationServiceSet, operationCtrlSet, authRepoSet, authServiceSet, authCtrlSet, typeRepoSet, typeServiceSet, typeCtrlSet, answerServiceSet, answerRepoSet, answerCtrlSet)
+	wire.Build(NewInitialization, db, paginatorSet, firebaseSet, userCtrlSet, userServiceSet, userRepoSet, roleRepoSet, itemRepoSet, itemCtrlSet, itemServiceSet, n2VocabularyRepoSet, n2VocabularyServiceSet, n2VocabularyCtrlSet, operationRepoSet, operationServiceSet, operationCtrlSet, authRepoSet, authServiceSet, authCtrlSet, typeRepoSet, typeServiceSet, typeCtrlSet, answerServiceSet, answerRepoSet, answerCtrlSet, recordServiceSet, recordRepoSet, recordCtrlSet)
 	return nil
 }

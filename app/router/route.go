@@ -51,6 +51,9 @@ func Init(init *config.Initialization) *gin.Engine {
 		answer := protected.Group("/answer")
 		answer.GET("/list", init.AnswerCtrl.QueryAnswerList)
 		answer.POST("/create", init.AnswerCtrl.CreateAnswerItem)
+
+		record := protected.Group("/record")
+		record.POST("/create", init.RecordCtrl.CreateRecord)
 	}
 
 	return router

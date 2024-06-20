@@ -9,10 +9,12 @@ import (
 )
 
 type Record struct {
-	ID         uint   `gorm:"column:id; primary_key; not null" json:"id"`
-	RecordId   string `gorm:"column:record_id;" json:"recordId"`
-	RecordType string `gorm:"column:record_type;" json:"recordType"`
-	QuestionId string `gorm:"column:question_id" json:"questionId"`
+	ID           uint   `gorm:"column:id; primary_key; not null" json:"id"`
+	RecordId     string `gorm:"column:record_id;" json:"recordId"`
+	RecordType   string `gorm:"column:record_type;" json:"recordType"`
+	QuestionId   string `gorm:"column:question_id" json:"questionId"`
+	AnswerId     string `gorm:"column:answer_id" json:"answerId"`
+	UserAnswerId string `gorm:"column:user_answer_id" json:"userAnswerId"`
 	dao.BaseModel
 }
 

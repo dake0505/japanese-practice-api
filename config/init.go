@@ -35,6 +35,10 @@ type Initialization struct {
 	answerRepo repository.AnswerRepository
 	answerSvc  service.AnswerService
 	AnswerCtrl controller.AnswerController
+
+	recordRepo repository.RecordRepository
+	recordSvc  service.RecordService
+	RecordCtrl controller.RecordController
 }
 
 func NewInitialization(
@@ -66,6 +70,10 @@ func NewInitialization(
 	answerRepo repository.AnswerRepository,
 	answerSvc service.AnswerService,
 	answerCtrl controller.AnswerController,
+
+	recordRepo repository.RecordRepository,
+	recordSvc service.RecordService,
+	recordCtrl controller.RecordController,
 ) *Initialization {
 	return &Initialization{
 		userRepo:            userRepo,
@@ -90,5 +98,8 @@ func NewInitialization(
 		answerRepo:          answerRepo,
 		answerSvc:           answerSvc,
 		AnswerCtrl:          answerCtrl,
+		recordRepo:          recordRepo,
+		recordSvc:           recordSvc,
+		RecordCtrl:          recordCtrl,
 	}
 }
