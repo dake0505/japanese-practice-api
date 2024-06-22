@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"gin-gonic-api/app/domain/dao"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +17,6 @@ func (r RoleRepositoryImpl) FindAllRole() {
 }
 
 func RoleRepositoryInit(db *gorm.DB) *RoleRepositoryImpl {
-	db.AutoMigrate(&dao.Role{}, &dao.User{})
 	return &RoleRepositoryImpl{
 		db: db,
 	}
