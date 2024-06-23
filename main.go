@@ -3,6 +3,7 @@ package main
 import (
 	"gin-gonic-api/app/router"
 	"gin-gonic-api/config"
+	"log"
 	"os"
 	"time"
 
@@ -33,11 +34,13 @@ func main() {
 
 	// 处理预检请求
 	r.OPTIONS("/*path", func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
+		log.Println("Received OPTIONS request")
+		c.Header("Access-Control-Allow-Origin", "https://japanese-practice-h5-ne6uh5zk4-dake0505s-projects.vercel.app")
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
-		c.AbortWithStatus(204)
+		c.Status(204)
 	})
+
 	init := config.Init(&gin.Context{})
 	app := router.Init(init)
 
