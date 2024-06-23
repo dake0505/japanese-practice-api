@@ -24,7 +24,7 @@ func main() {
 	// r.Use(cors.Default())
 	// 配置 CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://japanese-practice-h5-ne6uh5zk4-dake0505s-projects.vercel.app/"}, // 修改为你允许的前端域名
+		AllowOrigins:     []string{"https://japanese-practice-h5.vercel.app/"}, // 修改为你允许的前端域名
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -35,7 +35,7 @@ func main() {
 	// 处理预检请求
 	r.OPTIONS("/*path", func(c *gin.Context) {
 		log.Println("Received OPTIONS request")
-		c.Header("Access-Control-Allow-Origin", "https://japanese-practice-h5-ne6uh5zk4-dake0505s-projects.vercel.app")
+		c.Header("Access-Control-Allow-Origin", "https://japanese-practice-h5.vercel.app/")
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
 		c.Status(204)
