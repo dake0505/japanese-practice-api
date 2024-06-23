@@ -14,9 +14,8 @@ func Init(init *config.Initialization) *gin.Engine {
 
 	router := gin.New()
 
-	r := gin.Default()
 	// r.Use(cors.Default())
-	r.Use(cors.New(cors.Config{
+	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://japanese-practice-h5.vercel.app"}, // 去掉末尾的斜杠
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
@@ -25,7 +24,7 @@ func Init(init *config.Initialization) *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	r.OPTIONS("/*path", func(c *gin.Context) {
+	router.OPTIONS("/*path", func(c *gin.Context) {
 		log.Println("Received OPTIONS request")
 		c.Header("Access-Control-Allow-Origin", "https://japanese-practice-h5.vercel.app")
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -33,7 +32,7 @@ func Init(init *config.Initialization) *gin.Engine {
 		c.Status(200)
 	})
 
-	r.Use(func(c *gin.Context) {
+	router.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
