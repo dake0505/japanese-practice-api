@@ -24,7 +24,7 @@ type FirebaseIDTokenResponse struct {
 }
 
 func GetIDTokenFromCustomToken(customToken string) (string, error) {
-	apiKey := "AIzaSyBgjNxcZqSH_xUnb7buABmupvXO5_5XXxs" // 替换为你的 Firebase 项目的 API 密钥
+	apiKey := "AIzaSyBgjNxcZqSH_xUnb7buABmupvXO5_5XXxs"
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=%s", apiKey)
 	reqBody := FirebaseCustomTokenRequest{
 		Token:             customToken,

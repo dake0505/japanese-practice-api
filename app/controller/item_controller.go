@@ -30,6 +30,7 @@ func (i ItemControllerImpl) QueryItemDetail(c *gin.Context) {
 	idStr := c.Query("id")
 	id, err := strconv.ParseUint(idStr, 10, 32)
 	if err != nil {
+
 	}
 	data := i.svc.QueryQuestionDetail(uint(id))
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
@@ -41,7 +42,6 @@ func (i ItemControllerImpl) CreateQuestionItem(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// 处理请求数据
 	newItem := dto.CreateItemRequest{
 		QuestionTitle: body.QuestionTitle,
 		AnswerId:      body.AnswerId,

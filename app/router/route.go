@@ -47,6 +47,7 @@ func Init(init *config.Initialization) *gin.Engine {
 	})
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.Use(middleware.ErrorHandlingMiddleware())
 
 	api := router.Group("/api")
 	auth := api.Group("/auth")
