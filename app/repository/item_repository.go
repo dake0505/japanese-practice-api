@@ -11,6 +11,8 @@ type ItemRepository interface {
 	CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
 	UpdateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
 	QueryQuestionDetail(id uint) dao.QuestionItem
+	QueryPreviousQuestionId(currentQuestionId uint) *uint
+	QueryNextQuestionId(currentQuestionId uint) *uint
 }
 
 type ItemRepositoryImpl struct {
@@ -32,6 +34,34 @@ func (i ItemRepositoryImpl) QueryQuestionDetail(id uint) dao.QuestionItem {
 		return dao.QuestionItem{}
 	}
 	return questionItem
+}
+
+func (i ItemRepositoryImpl) QueryPreviousQuestionId(currentQuestionId uint) *uint {
+	var previousQuestionId uint
+	err := i.db.Table("question_item").
+		Select("id").
+		Where("id < ?", currentQuestionId).
+		Order("id DESC").
+		Limit(1).
+		Scan(&previousQuestionId).Error
+	if err != nil || previousQuestionId == 0 {
+		return nil
+	}
+	return &previousQuestionId
+}
+
+func (i ItemRepositoryImpl) QueryNextQuestionId(currentQuestionId uint) *uint {
+	var nextQuestionId uint
+	err := i.db.Table("question_item").
+		Select("id").
+		Where("id > ?", currentQuestionId).
+		Order("id ASC").
+		Limit(1).
+		Scan(&nextQuestionId).Error
+	if err != nil || nextQuestionId == 0 {
+		return nil
+	}
+	return &nextQuestionId
 }
 
 func (i ItemRepositoryImpl) CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem {

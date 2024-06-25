@@ -31,6 +31,8 @@ func (i ItemServiceImpl) GetItemList(c *gin.Context) {
 func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
 	questionInfo := i.itemRepository.QueryQuestionDetail(id)
 	answerList := i.answerRepository.QueryAnswerListByQuestionId(questionInfo.QuestionID)
+	nextQuestionId := i.itemRepository.QueryNextQuestionId(id)
+	preQuestionId := i.itemRepository.QueryPreviousQuestionId(id)
 	answerDtos := make([]dto.AnswerItem, len(answerList))
 	for i, answer := range answerList {
 		answerDtos[i] = dto.AnswerItem{
@@ -43,6 +45,8 @@ func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
 		QuestionID:    questionInfo.QuestionID,
 		QuestionTitle: questionInfo.QuestionTitle,
 		AnswerItems:   answerDtos,
+		NextId:        nextQuestionId,
+		PreId:         preQuestionId,
 	}
 	return questionDetail
 }

@@ -22,6 +22,8 @@ type QuestionDetailDto struct {
 	QuestionTitle string       `json:"questionTitle"`
 	AnswerId      string       `json:"answerId"`
 	AnswerItems   []AnswerItem `json:"answerItems"`
+	NextId        *uint        `json:"nextId"`
+	PreId         *uint        `json:"preId"`
 }
 
 type AnswerItem struct {
