@@ -63,8 +63,10 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
-		// Token is valid, set the user ID in the context
 		c.Set("userAuthID", token.UID)
+
+		userRecord, err := client.GetUser(c.Request.Context(), token.UID)
+		c.Set("userRecord", userRecord)
 		c.Next()
 	}
 }

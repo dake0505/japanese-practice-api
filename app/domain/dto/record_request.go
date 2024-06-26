@@ -7,3 +7,8 @@ type CreateRecordDto struct {
 	RecordType   string `json:"recordType"`
 	CreatedBy    string `json:"createdBy"`
 }
+
+type UpdateFavoriteDto struct {
+	QuestionId string `json:"questionId"`
+	CreatedBy  string `json:"createdBy"`
+}

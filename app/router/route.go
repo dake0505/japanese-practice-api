@@ -90,6 +90,7 @@ func Init(init *config.Initialization) *gin.Engine {
 
 		record := protected.Group("/record")
 		record.POST("/create", init.RecordCtrl.CreateRecord)
+		record.POST("/favorite", init.RecordCtrl.UpdateFavorite)
 	}
 
 	return router
