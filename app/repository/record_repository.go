@@ -9,6 +9,7 @@ import (
 type RecordRepository interface {
 	CreateRecord(item *record.Record, createdBy string) (record.Record, error)
 	QueryRecord(item *record.Record, createdBy string) (record.Record, error)
+	QueryRecordList(item *record.Record, createdBy string) ([]record.Record, error)
 	QueryRecordByQuestionId(questionId string, createdBy string) (record.Record, error)
 	UpdateRecord(item *record.Record, createdBy string) (record.Record, error)
 }
@@ -38,6 +39,22 @@ func (r RecordRepositoryImpl) QueryRecord(item *record.Record, createdBy string)
 	if err != nil {
 	}
 	return result, nil
+}
+
+func (r RecordRepositoryImpl) QueryRecordList(item *record.Record, createdBy string) ([]record.Record, error) {
+	var results []record.Record
+	query := r.db.Where("created_by = ?", createdBy)
+	if item.ID != 0 {
+		query = query.Where("id = ?", item.ID)
+	}
+	if item.QuestionId != "" {
+		query = query.Where("question_id = ?", item.QuestionId)
+	}
+	err := query.Find(&results).Error
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (r RecordRepositoryImpl) QueryRecordByQuestionId(questionId string, createdBy string) (record.Record, error) {

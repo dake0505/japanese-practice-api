@@ -14,6 +14,7 @@ import (
 )
 
 type RecordController interface {
+	QueryRecordList(c *gin.Context)
 	CreateRecord(c *gin.Context)
 	UpdateFavorite(c *gin.Context)
 }
@@ -22,6 +23,26 @@ type RecordControllerImpl struct {
 	recordService service.RecordService
 }
 
+func (r RecordControllerImpl) QueryRecordList(c *gin.Context) {
+	userRecord, exists := c.Get("userRecord")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "userRecord not found"})
+		return
+	}
+	authUserRecord, ok := userRecord.(*auth.UserRecord)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid userRecord type"})
+		return
+	}
+	params := dto.CreateRecordDto{
+		CreatedBy:  authUserRecord.Email,
+		RecordType: c.Param("recordType"),
+	}
+	res, err := r.recordService.QueryRecordList(params)
+	if err != nil {
+	}
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, res))
+}
 func (r RecordControllerImpl) CreateRecord(c *gin.Context) {
 	userAuthID, exists := c.Get("userAuthID")
 	if !exists {

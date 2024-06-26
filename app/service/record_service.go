@@ -8,6 +8,7 @@ import (
 
 type RecordService interface {
 	CreateRecord(item dto.CreateRecordDto) record.Record
+	QueryRecordList(item dto.CreateRecordDto) ([]record.Record, error)
 	UpdateRecord(data dto.UpdateFavoriteDto, updateType string) (record.Record, error)
 }
 
@@ -26,6 +27,19 @@ func (r RecordServiceImpl) CreateRecord(item dto.CreateRecordDto) record.Record 
 	if err != nil {
 	}
 	return data
+}
+
+func (r RecordServiceImpl) QueryRecordList(item dto.CreateRecordDto) ([]record.Record, error) {
+	input := record.Record{
+		QuestionId:   item.QuestionId,
+		AnswerId:     item.AnswerId,
+		UserAnswerId: item.UserAnswerId,
+		RecordType:   item.RecordType,
+	}
+	list, err := r.recordRepository.QueryRecordList(&input, item.CreatedBy)
+	if err != nil {
+	}
+	return list, nil
 }
 
 func (r RecordServiceImpl) UpdateRecord(data dto.UpdateFavoriteDto, updateType string) (record.Record, error) {
