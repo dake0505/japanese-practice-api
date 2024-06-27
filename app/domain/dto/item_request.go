@@ -17,13 +17,13 @@ type CreateTypeDto struct {
 }
 
 type QuestionDetailDto struct {
-	ID            uint         `json:"id"`
-	QuestionID    string       `json:"questionId"`
-	QuestionTitle string       `json:"questionTitle"`
-	AnswerId      string       `json:"answerId"`
-	AnswerItems   []AnswerItem `json:"answerItems"`
-	NextId        *uint        `json:"nextId"`
-	PreId         *uint        `json:"preId"`
+	ID             uint         `json:"id"`
+	QuestionID     string       `json:"questionId"`
+	QuestionTitle  string       `json:"questionTitle"`
+	AnswerId       string       `json:"answerId"`
+	AnswerItems    []AnswerItem `json:"answerItems"`
+	NextQuestionId *string      `json:"nextQuestionId"`
+	PreQuestionId  *string      `json:"preQuestionId"`
 }
 
 type AnswerItem struct {

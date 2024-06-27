@@ -6,7 +6,6 @@ import (
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/service"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,12 +26,8 @@ func (i ItemControllerImpl) GetItemList(c *gin.Context) {
 }
 
 func (i ItemControllerImpl) QueryItemDetail(c *gin.Context) {
-	idStr := c.Query("id")
-	id, err := strconv.ParseUint(idStr, 10, 32)
-	if err != nil {
-
-	}
-	data := i.svc.QueryQuestionDetail(uint(id))
+	idStr := c.Query("questionId")
+	data := i.svc.QueryQuestionDetail(idStr)
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 

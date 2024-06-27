@@ -15,7 +15,7 @@ type ItemService interface {
 	GetItemList(c *gin.Context)
 	CreateQuestionItem(item dto.CreateItemRequest) dao.QuestionItem
 	UpdateQuestionItem(item dto.UpdateItemRequest) dao.QuestionItem
-	QueryQuestionDetail(id uint) dto.QuestionDetailDto
+	QueryQuestionDetail(questionId string) dto.QuestionDetailDto
 }
 
 type ItemServiceImpl struct {
@@ -28,11 +28,11 @@ func (i ItemServiceImpl) GetItemList(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
-	questionInfo := i.itemRepository.QueryQuestionDetail(id)
+func (i ItemServiceImpl) QueryQuestionDetail(questionId string) dto.QuestionDetailDto {
+	questionInfo := i.itemRepository.QueryQuestionDetail(questionId)
 	answerList := i.answerRepository.QueryAnswerListByQuestionId(questionInfo.QuestionID)
-	nextQuestionId := i.itemRepository.QueryNextQuestionId(id)
-	preQuestionId := i.itemRepository.QueryPreviousQuestionId(id)
+	nextQuestionId := i.itemRepository.QueryNextQuestionId(questionId)
+	preQuestionId := i.itemRepository.QueryPreviousQuestionId(questionId)
 	answerDtos := make([]dto.AnswerItem, len(answerList))
 	for i, answer := range answerList {
 		answerDtos[i] = dto.AnswerItem{
@@ -41,12 +41,12 @@ func (i ItemServiceImpl) QueryQuestionDetail(id uint) dto.QuestionDetailDto {
 		}
 	}
 	questionDetail := dto.QuestionDetailDto{
-		ID:            questionInfo.ID,
-		QuestionID:    questionInfo.QuestionID,
-		QuestionTitle: questionInfo.QuestionTitle,
-		AnswerItems:   answerDtos,
-		NextId:        nextQuestionId,
-		PreId:         preQuestionId,
+		ID:             questionInfo.ID,
+		QuestionID:     questionInfo.QuestionID,
+		QuestionTitle:  questionInfo.QuestionTitle,
+		AnswerItems:    answerDtos,
+		NextQuestionId: nextQuestionId,
+		PreQuestionId:  preQuestionId,
 	}
 	return questionDetail
 }

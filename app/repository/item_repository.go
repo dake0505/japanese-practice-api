@@ -10,9 +10,9 @@ type ItemRepository interface {
 	GetItemList() []dao.QuestionItem
 	CreateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
 	UpdateQuestionItem(item *dao.QuestionItem) dao.QuestionItem
-	QueryQuestionDetail(id uint) dao.QuestionItem
-	QueryPreviousQuestionId(currentQuestionId uint) *uint
-	QueryNextQuestionId(currentQuestionId uint) *uint
+	QueryQuestionDetail(questionId string) dao.QuestionItem
+	QueryPreviousQuestionId(currentQuestionId string) *string
+	QueryNextQuestionId(currentQuestionId string) *string
 }
 
 type ItemRepositoryImpl struct {
@@ -27,38 +27,57 @@ func (i ItemRepositoryImpl) GetItemList() []dao.QuestionItem {
 	return items
 }
 
-func (i ItemRepositoryImpl) QueryQuestionDetail(id uint) dao.QuestionItem {
+func (i ItemRepositoryImpl) QueryQuestionDetail(questionId string) dao.QuestionItem {
 	var questionItem dao.QuestionItem
-	err := i.db.First(&questionItem, id).Error
+	err := i.db.Table("question_item").
+		Where("question_id = ?", questionId).
+		First(&questionItem).Error
 	if err != nil {
 		return dao.QuestionItem{}
 	}
 	return questionItem
 }
 
-func (i ItemRepositoryImpl) QueryPreviousQuestionId(currentQuestionId uint) *uint {
-	var previousQuestionId uint
+func (i ItemRepositoryImpl) QueryPreviousQuestionId(currentQuestionId string) *string {
+	var currentId uint
 	err := i.db.Table("question_item").
 		Select("id").
-		Where("id < ?", currentQuestionId).
+		Where("question_id = ?", currentQuestionId).
+		Scan(&currentId).Error
+	if err != nil || currentId == 0 {
+		return nil
+	}
+
+	var previousQuestionId string
+	err = i.db.Table("question_item").
+		Select("question_id").
+		Where("id < ?", currentId).
 		Order("id DESC").
 		Limit(1).
 		Scan(&previousQuestionId).Error
-	if err != nil || previousQuestionId == 0 {
+	if err != nil || previousQuestionId == "" {
 		return nil
 	}
 	return &previousQuestionId
 }
 
-func (i ItemRepositoryImpl) QueryNextQuestionId(currentQuestionId uint) *uint {
-	var nextQuestionId uint
+func (i ItemRepositoryImpl) QueryNextQuestionId(currentQuestionId string) *string {
+	var currentId uint
 	err := i.db.Table("question_item").
 		Select("id").
-		Where("id > ?", currentQuestionId).
+		Where("question_id = ?", currentQuestionId).
+		Scan(&currentId).Error
+	if err != nil || currentId == 0 {
+		return nil
+	}
+	var nextQuestionId string
+	err = i.db.Table("question_item").
+		Select("question_id").
+		Where("id > ?", currentId).
 		Order("id ASC").
 		Limit(1).
 		Scan(&nextQuestionId).Error
-	if err != nil || nextQuestionId == 0 {
+	if err != nil || nextQuestionId == "" {
 		return nil
 	}
 	return &nextQuestionId
