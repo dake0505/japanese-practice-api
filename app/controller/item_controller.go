@@ -7,6 +7,7 @@ import (
 	"gin-gonic-api/app/service"
 	"net/http"
 
+	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +28,17 @@ func (i ItemControllerImpl) GetItemList(c *gin.Context) {
 
 func (i ItemControllerImpl) QueryItemDetail(c *gin.Context) {
 	idStr := c.Query("questionId")
-	data := i.svc.QueryQuestionDetail(idStr)
+	userRecord, exists := c.Get("userRecord")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "userRecord not found"})
+		return
+	}
+	authUserRecord, ok := userRecord.(*auth.UserRecord)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid userRecord type"})
+		return
+	}
+	data := i.svc.QueryQuestionDetail(idStr, authUserRecord.Email)
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 

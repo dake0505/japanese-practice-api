@@ -24,6 +24,7 @@ type QuestionDetailDto struct {
 	AnswerItems    []AnswerItem `json:"answerItems"`
 	NextQuestionId *string      `json:"nextQuestionId"`
 	PreQuestionId  *string      `json:"preQuestionId"`
+	IsFavorite     bool         `json:"isFavorite"`
 }
 
 type AnswerItem struct {

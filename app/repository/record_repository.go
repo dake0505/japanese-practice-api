@@ -50,6 +50,9 @@ func (r RecordRepositoryImpl) QueryRecordList(item *record.Record, createdBy str
 	if item.QuestionId != "" {
 		query = query.Where("question_id = ?", item.QuestionId)
 	}
+	if item.RecordType != "" {
+		query = query.Where("record_type = ?", item.RecordType)
+	}
 	err := query.Find(&results).Error
 	if err != nil {
 		return nil, err

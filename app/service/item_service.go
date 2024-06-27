@@ -3,6 +3,7 @@ package service
 import (
 	"gin-gonic-api/app/constant"
 	dao "gin-gonic-api/app/domain/dao/question_item"
+	"gin-gonic-api/app/domain/dao/record"
 	"gin-gonic-api/app/domain/dto"
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/repository"
@@ -15,12 +16,13 @@ type ItemService interface {
 	GetItemList(c *gin.Context)
 	CreateQuestionItem(item dto.CreateItemRequest) dao.QuestionItem
 	UpdateQuestionItem(item dto.UpdateItemRequest) dao.QuestionItem
-	QueryQuestionDetail(questionId string) dto.QuestionDetailDto
+	QueryQuestionDetail(questionId string, createdBy string) dto.QuestionDetailDto
 }
 
 type ItemServiceImpl struct {
 	itemRepository   repository.ItemRepository
 	answerRepository repository.AnswerRepository
+	recordRepository repository.RecordRepository
 }
 
 func (i ItemServiceImpl) GetItemList(c *gin.Context) {
@@ -28,11 +30,20 @@ func (i ItemServiceImpl) GetItemList(c *gin.Context) {
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
-func (i ItemServiceImpl) QueryQuestionDetail(questionId string) dto.QuestionDetailDto {
+func (i ItemServiceImpl) QueryQuestionDetail(questionId string, createdBy string) dto.QuestionDetailDto {
 	questionInfo := i.itemRepository.QueryQuestionDetail(questionId)
 	answerList := i.answerRepository.QueryAnswerListByQuestionId(questionInfo.QuestionID)
 	nextQuestionId := i.itemRepository.QueryNextQuestionId(questionId)
 	preQuestionId := i.itemRepository.QueryPreviousQuestionId(questionId)
+	input := record.Record{
+		QuestionId: questionId,
+		RecordType: "favorite",
+	}
+	records, err := i.recordRepository.QueryRecordList(&input, createdBy)
+	if err != nil {
+
+	}
+	isFavorite := len(records) > 0
 	answerDtos := make([]dto.AnswerItem, len(answerList))
 	for i, answer := range answerList {
 		answerDtos[i] = dto.AnswerItem{
@@ -47,6 +58,7 @@ func (i ItemServiceImpl) QueryQuestionDetail(questionId string) dto.QuestionDeta
 		AnswerItems:    answerDtos,
 		NextQuestionId: nextQuestionId,
 		PreQuestionId:  preQuestionId,
+		IsFavorite:     isFavorite,
 	}
 	return questionDetail
 }
@@ -72,9 +84,10 @@ func (i ItemServiceImpl) UpdateQuestionItem(item dto.UpdateItemRequest) dao.Ques
 	return data
 }
 
-func ItemServiceInit(itemRepository repository.ItemRepository, answerRepository repository.AnswerRepository) *ItemServiceImpl {
+func ItemServiceInit(itemRepository repository.ItemRepository, answerRepository repository.AnswerRepository, recordRepository repository.RecordRepository) *ItemServiceImpl {
 	return &ItemServiceImpl{
 		itemRepository:   itemRepository,
 		answerRepository: answerRepository,
+		recordRepository: recordRepository,
 	}
 }
