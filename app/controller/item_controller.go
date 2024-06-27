@@ -6,8 +6,8 @@ import (
 	"gin-gonic-api/app/pkg"
 	"gin-gonic-api/app/service"
 	"net/http"
-	"strconv"
 
+	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,11 +27,18 @@ func (i ItemControllerImpl) GetItemList(c *gin.Context) {
 }
 
 func (i ItemControllerImpl) QueryItemDetail(c *gin.Context) {
-	idStr := c.Query("id")
-	id, err := strconv.ParseUint(idStr, 10, 32)
-	if err != nil {
+	idStr := c.Query("questionId")
+	userRecord, exists := c.Get("userRecord")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "userRecord not found"})
+		return
 	}
-	data := i.svc.QueryQuestionDetail(uint(id))
+	authUserRecord, ok := userRecord.(*auth.UserRecord)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid userRecord type"})
+		return
+	}
+	data := i.svc.QueryQuestionDetail(idStr, authUserRecord.Email)
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, data))
 }
 
@@ -41,7 +48,6 @@ func (i ItemControllerImpl) CreateQuestionItem(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// 处理请求数据
 	newItem := dto.CreateItemRequest{
 		QuestionTitle: body.QuestionTitle,
 		AnswerId:      body.AnswerId,

@@ -19,6 +19,7 @@ type AnswerRepositoryImpl struct {
 func (a AnswerRepositoryImpl) CreateAnswerItem(item *dao.AnswerItem) dao.AnswerItem {
 	var err = a.db.Create(item).Error
 	if err != nil {
+
 	}
 	return *item
 }

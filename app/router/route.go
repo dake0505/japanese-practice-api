@@ -47,6 +47,7 @@ func Init(init *config.Initialization) *gin.Engine {
 	})
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.Use(middleware.ErrorHandlingMiddleware())
 
 	api := router.Group("/api")
 	auth := api.Group("/auth")
@@ -88,7 +89,9 @@ func Init(init *config.Initialization) *gin.Engine {
 		answer.POST("/create", init.AnswerCtrl.CreateAnswerItem)
 
 		record := protected.Group("/record")
+		record.GET("/list", init.RecordCtrl.QueryRecordList)
 		record.POST("/create", init.RecordCtrl.CreateRecord)
+		record.POST("/favorite", init.RecordCtrl.UpdateFavorite)
 	}
 
 	return router
