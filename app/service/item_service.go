@@ -55,6 +55,7 @@ func (i ItemServiceImpl) QueryQuestionDetail(questionId string, createdBy string
 		ID:             questionInfo.ID,
 		QuestionID:     questionInfo.QuestionID,
 		QuestionTitle:  questionInfo.QuestionTitle,
+		AnswerId:       questionInfo.AnswerId,
 		AnswerItems:    answerDtos,
 		NextQuestionId: nextQuestionId,
 		PreQuestionId:  preQuestionId,
