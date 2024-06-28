@@ -36,7 +36,7 @@ func (r RecordControllerImpl) QueryRecordList(c *gin.Context) {
 	}
 	params := dto.CreateRecordDto{
 		CreatedBy:  authUserRecord.Email,
-		RecordType: c.Param("recordType"),
+		RecordType: c.Query("recordType"),
 	}
 	res, err := r.recordService.QueryRecordList(params)
 	if err != nil {
