@@ -19,11 +19,9 @@ type AuthRepositoryImpl struct {
 }
 
 func (a AuthRepositoryImpl) FindAuthByEmail(email string) (dao.Auth, error) {
-	auth := dao.Auth{
-		Email: email,
-	}
-	err := a.db.First(&auth).Error
-	log.Error("Got and error when find user by email. Error: ", err)
+	var auth dao.Auth
+	err := a.db.Where("email = ?", email).First(&auth).Error
+	log.Error("Got and error when find user by email. Error: ", err, auth)
 	if err != nil {
 		log.Error("Got and error when find user by email. Error: ", err)
 		return dao.Auth{}, err

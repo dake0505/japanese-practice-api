@@ -60,6 +60,9 @@ func (a AuthServiceImpl) Register(c *gin.Context, userInfo dao.Auth) (string, er
 	if data.Email != "" {
 		return "failed", errors.New("user with email already exists")
 	}
+	if err != nil {
+		log.Printf("FindAuthByEmail: %v", err)
+	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Printf("failed to hash password: %v", err)
