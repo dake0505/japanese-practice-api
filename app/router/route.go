@@ -54,6 +54,7 @@ func Init(init *config.Initialization) *gin.Engine {
 	{
 		auth.POST("/login", init.AuthCtrl.Login)
 		auth.POST("/register", init.AuthCtrl.Register)
+		auth.POST("/sendMail", init.AuthCtrl.SendMail)
 	}
 
 	protected := api.Group("/")
