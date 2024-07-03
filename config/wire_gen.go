@@ -23,14 +23,6 @@ func Init(ctx *gin.Context) *Initialization {
 	userRepositoryImpl := repository.UserRepositoryInit(gormDB)
 	userServiceImpl := service.UserServiceInit(userRepositoryImpl)
 	userControllerImpl := controller.UserControllerInit(userServiceImpl)
-	roleRepositoryImpl := repository.RoleRepositoryInit(gormDB)
-	paginator := pkg.PaginatorHandler(ctx)
-	n2VocabularyRepositoryImpl := repository.N2VocabularyRepositoryInit(gormDB, paginator)
-	n2VocabularyServiceImpl := service.N2VocabularyServiceInit(n2VocabularyRepositoryImpl)
-	n2VocabularyControllerImpl := controller.N2VocabularyControllerInit(n2VocabularyServiceImpl)
-	operationRepositoryImpl := repository.OperationRepositoryInit(gormDB)
-	operationServiceImpl := service.OperationServiceInit(operationRepositoryImpl)
-	operationControllerImpl := controller.OperationControllerInit(operationServiceImpl)
 	app := firebase.InitFirebase()
 	authRepositoryImpl := repository.AuthRepositoryInit(gormDB, app)
 	authServiceImpl := service.AuthServiceInit(authRepositoryImpl, app)
@@ -47,7 +39,7 @@ func Init(ctx *gin.Context) *Initialization {
 	answerControllerImpl := controller.AnswerControllerInit(answerServiceImpl)
 	recordServiceImpl := service.RecordServiceInit(recordRepositoryImpl)
 	recordControllerImpl := controller.RecordControllerInit(recordServiceImpl)
-	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, roleRepositoryImpl, n2VocabularyRepositoryImpl, n2VocabularyServiceImpl, n2VocabularyControllerImpl, operationRepositoryImpl, operationControllerImpl, operationServiceImpl, authRepositoryImpl, authServiceImpl, authControllerImpl, typeRepositoryImpl, typeServiceImpl, typeControllerImpl, itemRepositoryImpl, itemServiceImpl, itemControllerImpl, answerRepositoryImpl, answerServiceImpl, answerControllerImpl, recordRepositoryImpl, recordServiceImpl, recordControllerImpl)
+	initialization := NewInitialization(userRepositoryImpl, userServiceImpl, userControllerImpl, authRepositoryImpl, authServiceImpl, authControllerImpl, typeRepositoryImpl, typeServiceImpl, typeControllerImpl, itemRepositoryImpl, itemServiceImpl, itemControllerImpl, answerRepositoryImpl, answerServiceImpl, answerControllerImpl, recordRepositoryImpl, recordServiceImpl, recordControllerImpl)
 	return initialization
 }
 
@@ -65,13 +57,6 @@ var userRepoSet = wire.NewSet(repository.UserRepositoryInit, wire.Bind(new(repos
 
 var userCtrlSet = wire.NewSet(controller.UserControllerInit, wire.Bind(new(controller.UserController), new(*controller.UserControllerImpl)))
 
-var roleRepoSet = wire.NewSet(repository.RoleRepositoryInit, wire.Bind(new(repository.RoleRepository), new(*repository.RoleRepositoryImpl)))
-
-var n2VocabularyRepoSet = wire.NewSet(repository.N2VocabularyRepositoryInit, wire.Bind(new(repository.N2VocabularyRepository), new(*repository.N2VocabularyRepositoryImpl)))
-
-var n2VocabularyServiceSet = wire.NewSet(service.N2VocabularyServiceInit, wire.Bind(new(service.N2VocabularyService), new(*service.N2VocabularyServiceImpl)))
-
-var n2VocabularyCtrlSet = wire.NewSet(controller.N2VocabularyControllerInit, wire.Bind(new(controller.N2VocabularyController), new(*controller.N2VocabularyControllerImpl)))
 
 var itemRepoSet = wire.NewSet(repository.ItemRepositoryInit, wire.Bind(new(repository.ItemRepository), new(*repository.ItemRepositoryImpl)))
 
@@ -79,11 +64,6 @@ var itemServiceSet = wire.NewSet(service.ItemServiceInit, wire.Bind(new(service.
 
 var itemCtrlSet = wire.NewSet(controller.ItemControllerInit, wire.Bind(new(controller.ItemController), new(*controller.ItemControllerImpl)))
 
-var operationRepoSet = wire.NewSet(repository.OperationRepositoryInit, wire.Bind(new(repository.OperationRepository), new(*repository.OperationRepositoryImpl)))
-
-var operationServiceSet = wire.NewSet(service.OperationServiceInit, wire.Bind(new(service.OperationService), new(*service.OperationServiceImpl)))
-
-var operationCtrlSet = wire.NewSet(controller.OperationControllerInit, wire.Bind(new(controller.OperationController), new(*controller.OperationControllerImpl)))
 
 var authRepoSet = wire.NewSet(repository.AuthRepositoryInit, wire.Bind(new(repository.AuthRepository), new(*repository.AuthRepositoryImpl)))
 

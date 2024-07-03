@@ -10,15 +10,6 @@ type Initialization struct {
 	userRepo repository.UserRepository
 	userSvc  service.UserService
 	UserCtrl controller.UserController
-	RoleRepo repository.RoleRepository
-
-	n2VocabularyRepo    repository.N2VocabularyRepository
-	N2VocabularyCtrl    controller.N2VocabularyController
-	n2VocabularyService service.N2VocabularyService
-
-	operationRepo    repository.OperationRepository
-	OperationCtrl    controller.OperationController
-	operationSerivce service.OperationService
 
 	authRepo repository.AuthRepository
 	authSvc  service.AuthService
@@ -45,15 +36,6 @@ func NewInitialization(
 	userRepo repository.UserRepository,
 	userService service.UserService,
 	userCtrl controller.UserController,
-	roleRepo repository.RoleRepository,
-
-	n2VocabularyRepo repository.N2VocabularyRepository,
-	n2VocabularyService service.N2VocabularyService,
-	n2VocabularyCtrl controller.N2VocabularyController,
-
-	operationRepo repository.OperationRepository,
-	operationCtrl controller.OperationController,
-	operationSerivce service.OperationService,
 
 	authRepo repository.AuthRepository,
 	authSvc service.AuthService,
@@ -76,30 +58,23 @@ func NewInitialization(
 	recordCtrl controller.RecordController,
 ) *Initialization {
 	return &Initialization{
-		userRepo:            userRepo,
-		userSvc:             userService,
-		UserCtrl:            userCtrl,
-		RoleRepo:            roleRepo,
-		n2VocabularyRepo:    n2VocabularyRepo,
-		n2VocabularyService: n2VocabularyService,
-		N2VocabularyCtrl:    n2VocabularyCtrl,
-		operationRepo:       operationRepo,
-		OperationCtrl:       operationCtrl,
-		operationSerivce:    operationSerivce,
-		authRepo:            authRepo,
-		authSvc:             authSvc,
-		AuthCtrl:            authCtrl,
-		typeRepo:            typeRepo,
-		typeSvc:             typeSvc,
-		TypeCtrl:            typeCtrl,
-		itemRepo:            itemRepo,
-		itemSvc:             itemSvc,
-		ItemCtrl:            itemCtrl,
-		answerRepo:          answerRepo,
-		answerSvc:           answerSvc,
-		AnswerCtrl:          answerCtrl,
-		recordRepo:          recordRepo,
-		recordSvc:           recordSvc,
-		RecordCtrl:          recordCtrl,
+		userRepo:   userRepo,
+		userSvc:    userService,
+		UserCtrl:   userCtrl,
+		authRepo:   authRepo,
+		authSvc:    authSvc,
+		AuthCtrl:   authCtrl,
+		typeRepo:   typeRepo,
+		typeSvc:    typeSvc,
+		TypeCtrl:   typeCtrl,
+		itemRepo:   itemRepo,
+		itemSvc:    itemSvc,
+		ItemCtrl:   itemCtrl,
+		answerRepo: answerRepo,
+		answerSvc:  answerSvc,
+		AnswerCtrl: answerCtrl,
+		recordRepo: recordRepo,
+		recordSvc:  recordSvc,
+		RecordCtrl: recordCtrl,
 	}
 }

@@ -67,14 +67,6 @@ func Init(init *config.Initialization) *gin.Engine {
 		user.PUT("/:userID", init.UserCtrl.UpdateUserData)
 		user.DELETE("/:userID", init.UserCtrl.DeleteUser)
 
-		n2Vocabulary := protected.Group("/n2Vocabulary")
-		n2Vocabulary.GET("/list", init.N2VocabularyCtrl.GetList)
-		n2Vocabulary.GET("/:questionId", init.N2VocabularyCtrl.GetQuestionById)
-
-		questionOption := protected.Group("/operation")
-		questionOption.GET("/next/:id", init.OperationCtrl.Next)
-		questionOption.GET("/pre/:id", init.OperationCtrl.Pre)
-
 		questionType := protected.Group("/type")
 		questionType.GET("/list", init.TypeCtrl.GetTypeList)
 		questionType.POST("/create", init.TypeCtrl.CreateType)
