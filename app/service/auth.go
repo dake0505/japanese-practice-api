@@ -17,6 +17,7 @@ import (
 type AuthService interface {
 	Login(c *gin.Context, userInfo dao.Auth) (string, error)
 	Register(c *gin.Context, userInfo dao.Auth) (string, error)
+	SendMail(c *gin.Context, userInfo dao.Auth) (string, error)
 }
 
 type AuthServiceImpl struct {
@@ -77,25 +78,60 @@ func (a AuthServiceImpl) Register(c *gin.Context, userInfo dao.Auth) (string, er
 		return "failed", errors.New("internal server error")
 	}
 
-	params := (&auth.UserToCreate{}).
-		Email(email).
-		EmailVerified(false).
-		Password(string(hashedPassword)).
-		DisplayName("John").
-		PhotoURL("http://www.example.com/12345678/photo.png").
-		Disabled(false)
+	// params := (&auth.UserToCreate{}).
+	// 	Email(email).
+	// 	EmailVerified(false).
+	// 	Password(string(hashedPassword)).
+	// 	DisplayName("John").
+	// 	PhotoURL("http://www.example.com/12345678/photo.png").
+	// 	Disabled(false)
+	// client, err := a.fireAuth.Auth(context.Background())
+	// if err != nil {
+	// 	log.Errorf("Failed to get Firebase auth client: %v", err)
+	// 	return "failed", err
+	// }
+	// u, err := client.CreateUser(c, params)
+	// if err != nil {
+	// 	log.Fatalf("error creating user: %v\n", err)
+	// 	return "failed", err
+	// }
+	// log.Printf("Successfully created user: %v\n", u)
+	return "ok", err
+}
+
+func (a AuthServiceImpl) SendMail(c *gin.Context, userInfo dao.Auth) (string, error) {
+	email := userInfo.Email
+	password := userInfo.Password
 	client, err := a.fireAuth.Auth(context.Background())
 	if err != nil {
 		log.Errorf("Failed to get Firebase auth client: %v", err)
 		return "failed", err
 	}
+
+	_, errGetUserByEmail := client.GetUserByEmail(context.Background(), email)
+	if errGetUserByEmail == nil {
+		return "failed", errors.New("Email already exists")
+	}
+	// hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	// if err != nil {
+	// 	log.Printf("failed to hash password: %v", err)
+	// 	return "failed", errors.New("internal server error")
+	// }
+	params := (&auth.UserToCreate{}).
+		Email(email).
+		Password(password)
 	u, err := client.CreateUser(c, params)
 	if err != nil {
 		log.Fatalf("error creating user: %v\n", err)
 		return "failed", err
 	}
-	log.Printf("Successfully created user: %v\n", u)
-	return "ok", err
+	link, err := client.EmailVerificationLink(context.Background(), email)
+	log.Printf("email verifacation link: %v", link)
+	if err != nil {
+		log.Errorf("email verification link failed: %v", err)
+		return "failed", err
+	}
+	return u.UID, nil
 }
 
 func AuthServiceInit(authRepository repository.AuthRepository, fireAuth *firebase.App) *AuthServiceImpl {

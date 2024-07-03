@@ -15,6 +15,7 @@ import (
 type AuthController interface {
 	Login(c *gin.Context)
 	Register(c *gin.Context)
+	SendMail(c *gin.Context)
 }
 
 type AuthControllerImpl struct {
@@ -43,6 +44,18 @@ func (a AuthControllerImpl) Register(c *gin.Context) {
 		pkg.PanicException(constant.InvalidRequest)
 	}
 	res, err := a.svc.Register(c, request)
+	if err != nil {
+	}
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, res))
+}
+
+func (a AuthControllerImpl) SendMail(c *gin.Context) {
+	var request dao.Auth
+	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Error("Happened error when mapping request from FE. Error", err)
+		pkg.PanicException(constant.InvalidRequest)
+	}
+	res, err := a.svc.SendMail(c, request)
 	if err != nil {
 	}
 	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, res))
