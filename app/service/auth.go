@@ -28,29 +28,42 @@ type AuthServiceImpl struct {
 func (a AuthServiceImpl) Login(c *gin.Context, userInfo dao.Auth) (string, error) {
 	email := userInfo.Email
 	password := userInfo.Password
+
 	data, err := a.authRepository.FindAuthByEmail(email)
-	log.Printf("failed to get user by email from database: %v", err)
+	// user is not existed in database
 	if err != nil {
 		log.Printf("failed to get user by email from database: %v", err)
 		return "failed", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(data.Password), []byte(password))
+	// password is not right
 	if err != nil {
 		log.Printf("password does not match: %v", err)
-		return "failed", err
+		return "password is not right", err
 	}
+
 	client, err := a.fireAuth.Auth(context.Background())
+	// firebase client init failed
 	if err != nil {
 		log.Printf("failed to get user by email from Firebase: %v", err)
-		return "failed", err
+		return "firebase client init failed", err
 	}
+
 	u, err := client.GetUserByEmail(c, email)
+	// user is not existed in firebase
+	if err != nil {
+		log.Printf("failed to get user by email from Firebase: %v", err)
+		return "user is not existed in firebase", err
+	}
+
 	customToken, err := client.CustomToken(c.Request.Context(), u.UID)
+	// custom token init failed
 	if err != nil {
 		log.Printf("failed to create custom token: %v", err)
-		return "failed", err
+		return "custom token init failed", err
 	}
+
 	return customToken, nil
 }
 

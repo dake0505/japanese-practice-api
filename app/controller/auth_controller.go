@@ -25,16 +25,16 @@ type AuthControllerImpl struct {
 func (a AuthControllerImpl) Login(c *gin.Context) {
 	var request dao.Auth
 	if err := c.ShouldBindJSON(&request); err != nil {
-		log.Printf("Happened error when mapping request from FE. Error: %v", err)
-		c.Error(err)
+		log.Error("Happened error when mapping request from FE. Error: %v", err)
+		c.JSON(http.StatusBadRequest, pkg.BuildResponse(constant.InvalidRequest, "params unvalid"))
 		return
 	}
-	customToken, err := a.svc.Login(c, request)
+	data, err := a.svc.Login(c, request)
 	if err != nil {
-		c.Error(err)
+		c.Error(err).SetMeta(data)
 		return
 	}
-	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": customToken}))
+	c.JSON(http.StatusOK, pkg.BuildResponse(constant.Success, gin.H{"token": data}))
 }
 
 func (a AuthControllerImpl) Register(c *gin.Context) {
